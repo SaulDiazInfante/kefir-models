@@ -1,6 +1,7 @@
 # kefir-models
 
 [![CI](https://github.com/SaulDiazInfante/kefir-models/actions/workflows/ci.yml/badge.svg)](https://github.com/SaulDiazInfante/kefir-models/actions/workflows/ci.yml)
+[![Docs](https://github.com/SaulDiazInfante/kefir-models/actions/workflows/docs.yml/badge.svg)](https://sauldiazinfante.github.io/kefir-models/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 
@@ -17,6 +18,8 @@ compares five dynamical descriptions of the same growth experiment:
 All models are compared with RMSE, R², AIC, BIC, and (for the stochastic
 models) predictive-interval coverage on the original response scale.
 
+📖 **Documentation:** <https://sauldiazinfante.github.io/kefir-models/>
+
 ## Repository layout
 
 ```text
@@ -25,8 +28,9 @@ models) predictive-interval coverage on the original response scale.
 ├── tests/              # pytest suite
 ├── configs/            # JSON configurations for the CLIs
 ├── data/raw/           # Raw experimental CSV (immutable input)
-├── docs/               # LaTeX report sources (.tex, .bib)
+├── docs/               # MkDocs site pages + LaTeX report sources
 ├── results/            # Curated experiment figures (PNG)
+├── mkdocs.yml          # Documentation site configuration
 ├── pyproject.toml      # Packaging + tooling configuration
 └── requirements.txt    # Runtime dependencies
 ```

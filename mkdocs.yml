@@ -1,0 +1,58 @@
+site_name: kefir-models
+site_description: Neural ODE, Neural SDE, and logistic PINN models for water kefir fermentation data
+site_author: Saul Diaz-Infante Velasco
+site_url: https://sauldiazinfante.github.io/kefir-models/
+repo_url: https://github.com/SaulDiazInfante/kefir-models
+repo_name: SaulDiazInfante/kefir-models
+edit_uri: edit/main/docs/
+
+# The docs/ directory also holds the LaTeX report sources; keep them out of the site.
+exclude_docs: |
+  *.tex
+  *.bib
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+    - search.suggest
+  palette:
+    - scheme: default
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - Models: models.md
+  - Results: results.md
+  - API Reference: api.md
+  - Report: report.md
+  - Changelog: changelog.md
