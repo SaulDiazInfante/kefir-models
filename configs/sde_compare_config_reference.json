@@ -1,0 +1,20 @@
+{
+    "data_path": "data/raw/waterKefirTrialsReferece.csv",
+    "output_dir": "neural_sde_comparison_outputs",
+    "ode_epochs": 1000,
+    "sde_epochs": 1000,
+    "classical_epochs": 3000,
+    "ode_learning_rate": 0.01,
+    "sde_learning_rate": 0.005,
+    "classical_learning_rate": 0.05,
+    "hidden_units": 32,
+    "hidden_layers": 2,
+    "weight_decay": 0.0001,
+    "min_diffusion": 0.001,
+    "ode_method": "rk4",
+    "sde_paths": 10000,
+    "interval_level": 0.9,
+    "seed": 7,
+    "device": "cuda",
+    "plot": true
+}

@@ -1,0 +1,7 @@
+# Runtime dependencies (kept in sync with pyproject.toml [project.dependencies]).
+# For development, prefer: pip install -e ".[dev]"
+pandas>=2.0
+numpy>=1.24
+torch>=2.0
+torchdiffeq>=0.2
+matplotlib>=3.7

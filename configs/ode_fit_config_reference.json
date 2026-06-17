@@ -1,0 +1,13 @@
+{
+    "data_path": "data/raw/waterKefirTrialsReferece.csv",
+    "output_dir": "neural_ode_outputs",
+    "epochs": 3000,
+    "learning_rate": 0.01,
+    "hidden_units": 32,
+    "hidden_layers": 2,
+    "weight_decay": 0.0001,
+    "method": "dopri5",
+    "seed": 7,
+    "device": "cuda",
+    "plot": true
+}

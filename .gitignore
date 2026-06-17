@@ -1,0 +1,56 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*.so
+
+# Packaging / build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test / lint / type caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Virtual environments / conda
+.venv/
+venv/
+env/
+.conda/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+
+# Agent metadata (from source project)
+.agents/
+.codex/
+
+# Trained model checkpoints (regenerate with the CLIs)
+*.pt
+
+# CLI default output directories (curated figures are committed under results/)
+/neural_ode_outputs/
+/neural_sde_comparison_outputs/
+/logistic_pinn_outputs/
+/outputs/
+
+# LaTeX build artifacts (sources are kept; build with latexmk)
+docs/*.aux
+docs/*.bbl
+docs/*.blg
+docs/*.fdb_latexmk
+docs/*.fls
+docs/*.log
+docs/*.out
+docs/*.synctex.gz
+docs/*.toc
+docs/*.pdf

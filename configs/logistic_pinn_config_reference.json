@@ -1,0 +1,20 @@
+{
+    "data_path": "data/raw/waterKefirTrialsReferece.csv",
+    "output_dir": "logistic_pinn_outputs",
+    "deterministic_epochs": 3000,
+    "stochastic_epochs": 3000,
+    "learning_rate": 0.005,
+    "hidden_units": 32,
+    "hidden_layers": 3,
+    "collocation_points": 128,
+    "physics_weight": 1.0,
+    "initial_weight": 1.0,
+    "transition_weight": 0.1,
+    "initial_diffusion": 0.02,
+    "sde_paths": 5000,
+    "interval_level": 0.9,
+    "plot_points": 300,
+    "seed": 7,
+    "device": "auto",
+    "plot": true
+}
