@@ -92,11 +92,12 @@ step-by-step sequences) are in `results/`.
 
 ## Report
 
-The LaTeX report sources are in `docs/`. Build the PDF with:
+The LaTeX report is modular, with `docs/00_main.tex` as the root document.
+Build the PDF with:
 
 ```bash
 cd docs
-latexmk -pdf kefir_model_comparison_report.tex
+latexmk -pdf 00_main.tex
 ```
 
 ## Development
