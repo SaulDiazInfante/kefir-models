@@ -55,3 +55,5 @@ docs/*.out
 docs/*.synctex.gz
 docs/*.toc
 docs/*.pdf
+# Keep the compiled report PDF tracked
+!docs/00_main.pdf
