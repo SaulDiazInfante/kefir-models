@@ -1,11 +1,11 @@
 The stochastic inverse problem augments the same logistic drift with
 multiplicative process noise:
 $$
-  dX_t^
+  dX_t
   =
   rX_t\left(1-\frac{X_t}{K}\right)\,dt
   +
-  \sigma X_t\,dW_t .
+  \sigma X_t\, \circ dW_t .
 $$
 The stochastic PINN retains the same neural trajectory, data loss, initial
 loss, and physics residual used by the deterministic PINN. The additional
@@ -95,7 +95,7 @@ follows:
         intensity because $\sigma$ controls the transition variance.
   \item Add the weighted transition likelihood to the PINN data, initial, and
         physics losses, then backpropagate through the full objective to update
-        $(\eta,a,b,c)$.
+        $(\theta,a,b,c)$.
   \item After training, report
         $\widehat r=r(\widehat a)$,
         $\widehat K=K(\widehat b)$, and
@@ -114,5 +114,5 @@ Euler-Maruyama. Each trial-specific simulation starts from its observed initial
 value $y_0^{[j]}$. The reported stochastic mean and central 90 percent
 predictive interval use 5000 Monte Carlo paths. In the numerical table,
 ``Stochastic Logistic PINN Drift'' refers to the fitted neural trajectory
-$u_\eta$, whereas ``Stochastic Logistic SDE Mean'' refers to the Monte Carlo
+$u_\theta$, whereas ``Stochastic Logistic SDE Mean'' refers to the Monte Carlo
 mean of the fitted SDE.

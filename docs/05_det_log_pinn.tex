@@ -2,19 +2,20 @@ The two new models solve the inverse problem for the logistic growth law with a
 physics-informed neural network (PINN) \citep{raissi2019physics}. Unlike the
 classical logistic baseline, the PINN does not evaluate the closed-form
 logistic solution during training. Instead, it learns a neural trajectory
-$u_\eta(\tau)$ and estimates the physical parameters by penalizing violations
+$u_\theta(\tau)$ and estimates the physical parameters by penalizing violations
 of the differential equation.
 
 The unknowns in the deterministic PINN inverse problem are
 $$
-  \eta,\quad r,\quad K,
+  \theta,\quad r,\quad K,
 $$
-where $\eta$ denotes all neural-network weights and biases. The unknowns in the
+where $\theta$ denotes all neural-network weights and biases. The unknowns in
+the
 stochastic PINN inverse problem are
 $$
-  \eta,\quad r,\quad K,\quad \sigma.
+  \theta,\quad r,\quad K,\quad \sigma.
 $$
-The role of the neural trajectory $u_\eta$ is to provide a differentiable
+The role of the neural trajectory $u_\theta$ is to provide a differentiable
 surrogate for the unobserved continuous-time biomass curve. The physical
 parameters are then identified by forcing this differentiable surrogate to
 match the measurements and to satisfy the logistic differential equation at
@@ -26,9 +27,9 @@ parameters jointly.
 
 Both logistic PINNs use a scalar neural trajectory
 $$
-  u_\eta:[0,1]\rightarrow \mathbb R_+,
+  u_\theta:[0,1]\rightarrow \mathbb R_+,
   \qquad
-  \widehat y(t)=u_\eta(\tau(t)).
+  \widehat y(t)=u_\theta(\tau(t)).
 $$
 The network input is the normalized time $\tau$. The hidden architecture has
 three fully connected hidden layers, 32 units in each hidden layer, and
@@ -40,7 +41,7 @@ $$
 followed by one scalar output layer. Positivity of the fitted biomass
 trajectory is enforced by
 $$
-  u_\eta(\tau)=\operatorname{softplus}(W_o h_3+b_o)+10^{-6}.
+  u_\theta(\tau)=\operatorname{softplus}(W_o h_3+b_o)+10^{-6}.
 $$
 The trajectory network has 2209 trainable weights and biases:
 $$
@@ -76,7 +77,7 @@ Here $r$ is on the original time scale, because the physics residual includes
 the time-scale factor $t_{\max}-t_{\min}=168$.
 
 The PINN initialization is chosen to start from a stable positive trajectory.
-The final network layer is initialized so that $u_\eta(\tau)$ is approximately
+The final network layer is initialized so that $u_\theta(\tau)$ is approximately
 constant at the mean observed initial level,
 $$
   \bar y_0=\frac{1}{J}\sum_{j=1}^J y_0^{[j]}.
@@ -97,43 +98,43 @@ $$
 Since the PINN is differentiated with respect to normalized time $\tau$, the
 residual uses
 $$
-  \frac{du_\eta}{d\tau}
+  \frac{du_\theta}{d\tau}
   =
   (t_{\max}-t_{\min})\,
-  r u_\eta(\tau)\left(1-\frac{u_\eta(\tau)}{K}\right).
+  r u_\theta(\tau)\left(1-\frac{u_\theta(\tau)}{K}\right).
 $$
 Let $\{\xi_m\}_{m=1}^M$ be $M=128$ uniformly spaced collocation points in
 $[0,1]$. The data, initial-condition, and physics losses are
 $$
-  \mathcal L_{\mathrm{data}}(\eta)
+  \mathcal L_{\mathrm{data}}(\theta)
   =
   \frac{1}{n}
   \sum_{(i,j)\in\Omega}
   \left(
-    \frac{u_\eta(\tau_i)-y_i^{[j]}}{s_y}
+    \frac{u_\theta(\tau_i)-y_i^{[j]}}{s_y}
   \right)^2,
 $$
 $$
-  \mathcal L_{\mathrm{init}}(\eta)
+  \mathcal L_{\mathrm{init}}(\theta)
   =
   \frac{1}{J}
   \sum_{j=1}^J
   \left(
-    \frac{u_\eta(0)-y_0^{[j]}}{s_y}
+    \frac{u_\theta(0)-y_0^{[j]}}{s_y}
   \right)^2,
 $$
 and
 $$
-  \mathcal L_{\mathrm{phys}}(\eta,r,K)
+  \mathcal L_{\mathrm{phys}}(\theta,r,K)
   =
   \frac{1}{M}
   \sum_{m=1}^M
   \left[
     \frac{
-      \dfrac{du_\eta}{d\tau}(\xi_m)
+      \dfrac{du_\theta}{d\tau}(\xi_m)
       -
-      (t_{\max}-t_{\min})r u_\eta(\xi_m)
-      \left(1-\dfrac{u_\eta(\xi_m)}{K}\right)
+      (t_{\max}-t_{\min})r u_\theta(\xi_m)
+      \left(1-\dfrac{u_\theta(\xi_m)}{K}\right)
     }{s_y}
   \right]^2 .
 $$
@@ -163,23 +164,24 @@ loop:
         $\xi_1,\ldots,\xi_M$ on $[0,1]$. These points are not additional data;
         they are locations where the logistic differential equation is
         enforced.
-  \item Initialize the trajectory network $u_\eta$ and raw physical variables
+  \item Initialize the trajectory network $u_\theta$ and raw physical variables
         $a,b$. The reported parameters at every epoch are obtained from
         $r=\operatorname{softplus}(a)+10^{-8}$ and
         $K=K_{\min}+\operatorname{softplus}(b)+10^{-8}$.
   \item Evaluate the population trajectory at the observation times to compute
         $\mathcal L_{\mathrm{data}}$ and $\mathcal L_{\mathrm{init}}$.
-  \item Evaluate $u_\eta(\xi_m)$ at the collocation points and use automatic
-        differentiation to compute $du_\eta/d\tau$ at those same points.
+  \item Evaluate $u_\theta(\xi_m)$ at the collocation points and use automatic
+        differentiation to compute $du_\theta/d\tau$ at those same points.
   \item Form the residual
-        $du_\eta/d\tau-(t_{\max}-t_{\min})r u_\eta(1-u_\eta/K)$ and compute
+        $du_\theta/d\tau-(t_{\max}-t_{\min})r u_\theta(1-u_\theta/K)$ and
+        compute
         $\mathcal L_{\mathrm{phys}}$.
   \item Add the weighted terms to obtain
         $\mathcal L_{\mathrm{detPINN}}$, backpropagate through both the
         network and the softplus-transformed parameters, and update
-        $(\eta,a,b)$ with Adam.
+        $(\theta,a,b)$ with Adam.
   \item After training, transform the final raw variables to
-        $\widehat r$ and $\widehat K$, and evaluate $u_{\widehat\eta}(\tau)$
+        $\widehat r$ and $\widehat K$, and evaluate $u_{\widehat\theta}(\tau)$
         on the observed and dense plotting grids.
 \end{enumerate}
 
