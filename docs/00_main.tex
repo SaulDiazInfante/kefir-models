@@ -1,0 +1,36 @@
+\documentclass[11pt]{amsart}
+\input{setup}
+
+\title[Water Kefir data Fitting Comparison]{
+    Water Kefir data Fitting Comparison:
+    Classic Logistic ODE, Neural ODE/SDE,
+    and Logistic det/sto PINN
+}
+\author{Saul Diaz-Infante Velasco}
+\date{\today}
+
+\begin{document}
+    \maketitle
+    \input{abstract}
+    \tableofcontents
+    \section{Data and preprocessing}
+        \input{01_data_and_preprocessing}
+    \section{Models}
+        \input{02_classic_logisitc_ode}
+    \subsection{Neural ODE}
+        \input{03_node}
+    \subsection{Neural SDE}
+        \input{04_nsde}
+    \subsection{Logistic PINN inverse models}
+            \input{05_det_log_pinn}
+        \subsubsection{Stochastic logistic PINN}
+            \input{06_sto_log_pinn}
+    \section{Comparison criteria}
+    \section{Numerical results}
+        \input{08_numerics}
+    \section{Reproducibility}
+        \input{09_reproducibility}
+
+\bibliographystyle{plainnat}
+\bibliography{kefir_model_comparison_references}
+\end{document}

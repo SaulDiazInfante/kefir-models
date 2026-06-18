@@ -1,0 +1,95 @@
+The deterministic neural model is the non-autonomous Neural ODE
+\citep{chen2018neuralode}
+\begin{equation}
+  \frac{d z}{d\tau} = f_\theta(\tau,z),
+  \qquad
+  z(0)=z_0.
+\end{equation}
+
+The fitted solution is a single population curve, not one curve per trial. The
+three trials are treated as replicate observations of the same underlying
+trajectory. On the original response scale the initial condition is
+\begin{equation}
+    y_0 = y(t_0)
+    =
+        \frac{1}{J}\sum_{j=1}^J y_0^{[j]},
+\end{equation}
+%
+the mean of the first observed values across trials. The corresponding
+normalized initial condition is
+$$
+    z_0 = \frac{y_0-\bar y}{s_y}.
+$$
+After solving the normalized ODE, the fitted value on the original scale is
+\begin{equation}
+    \label{eqn:inverze_normalization}
+    \begin{aligned}
+        \widehat y_i
+            &=
+                \widehat y(t_i)
+        \\
+            &=
+            \bar y +
+            s_y \cdot \widehat z(\tau_i;\theta)
+    \end{aligned}
+\end{equation}
+The same value $\widehat y_i$ is compared with every trial observation
+$y_i^{[j]}$ at time $t_i$.
+
+\paragraph{Network Architecture}
+The right-hand side $f_\theta$ is a fully connected neural network with input
+$(\tau,z)\in\mathbb R^2$, two hidden layers, 32 hidden units per layer, and
+hyperbolic tangent activation:
+
+\begin{equation}
+    \label{eqn:activation_functions}
+    \begin{aligned}
+        h_1 &=
+            \tanh(W_1 x+b_1),
+        \\
+        h_{\ell}
+            &=
+                \tanh(W_{\ell}h_{\ell-1}+b_{\ell}),
+        \\
+        f_\theta(x)
+            &=
+                W_o h_2+b_o
+    \end{aligned}
+\end{equation}
+where $x=(\tau,z)^T$. The network has 1185 trainable weights and biases.
+This count comes from the three affine layers:
+$$
+\begin{aligned}
+  \hbox{input to hidden 1:}&\quad 2\cdot 32+32=96,\\
+  \hbox{hidden 1 to hidden 2:}&\quad 32\cdot 32+32=1056,\\
+  \hbox{hidden 2 to output:}&\quad 32\cdot 1+1=33.
+\end{aligned}
+$$
+Thus $96+1056+33=1185$. The architecture was chosen as a compact smooth
+function approximator for a scalar time-dependent vector field. The input has
+only two coordinates, time and state, and the data set has only 45 scalar
+observations, so a very large network would make the comparison dominated by
+overparameterization. Two hidden layers with 32 units give substantially more
+flexibility than the two-parameter logistic curve while remaining small enough
+to train stably with weight decay. The $\tanh$ nonlinearity gives a smooth
+right-hand side, which is useful for ODE/SDE integration, and sigmoidal neural
+networks are classical universal approximators \citep{cybenko1989approximation}.
+The same architecture is used for the Neural ODE and for each Neural SDE
+coefficient so that differences between the deterministic and stochastic neural
+models are not caused by different network sizes.
+
+The ODE was solved at the observed normalized times using RK4 with step size
+$0.01$. The empirical loss was
+$$
+  \mathcal L_{\mathrm{ODE}}(\theta)
+  =
+  \frac{1}{n}
+  \sum_{(i,j)\in\Omega}
+  \left(z_i^{[j]}-\widehat z_i(\theta)\right)^2.
+$$
+Equivalently, in original response units this loss fits one curve
+$\widehat y_i$ to all three replicate measurements at the same time. The
+minimizer is therefore encouraged to pass through the center of the replicate
+cloud, while the ODE structure enforces a smooth dynamical trajectory.
+Training used Adam for 1000 epochs with learning rate $10^{-2}$ and weight
+decay $10^{-4}$ \citep{kingma2015adam}.

@@ -1,0 +1,32 @@
+        Let $y_i^{[j]}$ denote the response observed at time $t_i$ in trial $j$,
+    with $i=0,\ldots,T-1$ and $j=1,\ldots,J$. In this experiment $T=15$ and
+    $J=3$. The time points run from $0$ to $168$ in the original time units.
+    The observed index set is
+    $$
+    \Omega = \{(i,j): y_i^{[j]}\ \hbox{is observed}\},
+    \qquad n = |\Omega| = 45.
+    $$
+
+        The Neural ODE and Neural SDE were trained on normalized time and
+    normalized response:
+    $$
+        \tau_i = \frac{t_i-t_{\min}}{t_{\max}-t_{\min}},
+        \qquad
+        z_i^{[j]} = \frac{y_i^{[j]}-\bar y}{s_y},
+    $$
+    where
+    $$
+        \bar y = \frac{1}{n}\sum_{(i,j)\in\Omega} y_i^{[j]},
+        \qquad
+        s_y =
+            \left[
+                \frac{1}{n}\sum_{(i,j)\in\Omega}(y_i^{[j]}-\bar y)^2
+            \right]^{1/2}.
+    $$
+    Thus $\tau_i\in[0,1]$. The logistic PINN models also use normalized time,
+    but their neural trajectories are expressed directly on the original
+    response scale. Their data and physics losses are divided by $s_y^2$ so
+    that residual terms are dimensionless and numerically comparable. All model
+    diagnostics were computed on the original response scale; for the Neural
+    ODE and Neural SDE this required transforming fitted normalized values back
+    to the scale of $y_i^{[j]}$.

@@ -1,0 +1,118 @@
+The stochastic inverse problem augments the same logistic drift with
+multiplicative process noise:
+$$
+  dX_t^
+  =
+  rX_t\left(1-\frac{X_t}{K}\right)\,dt
+  +
+  \sigma X_t\,dW_t .
+$$
+The stochastic PINN retains the same neural trajectory, data loss, initial
+loss, and physics residual used by the deterministic PINN. The additional
+identification of $\sigma$ comes from an Euler-Maruyama transition likelihood
+on adjacent observed pairs. For $\Delta t_i=t_{i+1}-t_i$,
+$$
+  Y_{i+1}^{[j]}\mid Y_i^{[j]}
+  \approx
+  \mathcal N(m_i^{[j]},v_i^{[j]}),
+$$
+where
+$$
+  m_i^{[j]}
+  =
+  y_i^{[j]}
+  +
+  r y_i^{[j]}\left(1-\frac{y_i^{[j]}}{K}\right)\Delta t_i,
+  \qquad
+  v_i^{[j]}
+  =
+  \left(\sigma y_i^{[j]}\right)^2\Delta t_i+10^{-6}.
+$$
+Let $\Omega_{\mathrm{tr}}$ be the set of adjacent observed transitions. The
+transition negative log-likelihood is
+$$
+  \mathcal L_{\mathrm{tr}}(r,K,\sigma)
+  =
+  \frac{1}{|\Omega_{\mathrm{tr}}|}
+  \sum_{(i,j)\in\Omega_{\mathrm{tr}}}
+  \frac{1}{2}
+  \left[
+    \log(2\pi v_i^{[j]})
+    +
+    \frac{(y_{i+1}^{[j]}-m_i^{[j]})^2}{v_i^{[j]}}
+  \right].
+$$
+Operationally, this loss is computed one observed step at a time. For each
+complete adjacent pair, the current value $y_i^{[j]}$ and time increment
+$\Delta t_i$ determine the Euler-Maruyama mean $m_i^{[j]}$ and variance
+$v_i^{[j]}$. The difference $y_{i+1}^{[j]}-m_i^{[j]}$ is the one-step
+innovation around the logistic drift. The Gaussian negative log-likelihood
+then combines two penalties: a scaled squared innovation
+$(y_{i+1}^{[j]}-m_i^{[j]})^2/v_i^{[j]}$, which penalizes transitions that are
+far from the predicted mean, and a $\log(2\pi v_i^{[j]})$ term, which penalizes
+unnecessarily large transition variance. The reported transition NLL is the
+average of these per-transition contributions over $\Omega_{\mathrm{tr}}$.
+Thus a smaller value means that the observed kefir growth increments are more
+plausible under the stochastic logistic dynamics. The parameter $\sigma$ is
+identified through this term because it controls $v_i^{[j]}$: if $\sigma$ is
+too small, ordinary short-time fluctuations are assigned very low probability,
+whereas if $\sigma$ is too large, the log-variance part of the likelihood
+penalizes the excess uncertainty.
+
+The total stochastic objective is
+$$
+  \mathcal L_{\mathrm{stoPINN}}
+  =
+  \mathcal L_{\mathrm{data}}
+  +
+  \lambda_0\mathcal L_{\mathrm{init}}
+  +
+  \lambda_{\mathrm{phys}}\mathcal L_{\mathrm{phys}}
+  +
+  \lambda_{\mathrm{tr}}\mathcal L_{\mathrm{tr}},
+$$
+with $\lambda_0=1$, $\lambda_{\mathrm{phys}}=1$, and
+$\lambda_{\mathrm{tr}}=0.1$. The transition likelihood is evaluated on the
+original response scale and the original time increments, while the
+collocation residual is evaluated in normalized time. Training used Adam for
+3000 epochs with learning rate $5\times10^{-3}$.
+
+The stochastic PINN/SDE estimation procedure extends the deterministic loop as
+follows:
+\begin{enumerate}
+  \item Construct the same observation losses and collocation physics loss used
+        by the deterministic PINN.
+  \item Build a transition data set from adjacent observations:
+        $(y_i^{[j]},y_{i+1}^{[j]},\Delta t_i)$ is included only when both
+        endpoints are observed.
+  \item Optimize three raw physical variables $a,b,c$, transformed to
+        $r>0$, $K>K_{\min}$, and $\sigma>0$ with softplus maps.
+  \item For every adjacent transition, compute the Euler-Maruyama conditional
+        mean $m_i^{[j]}$ and variance $v_i^{[j]}$ implied by the current
+        $r$, $K$, and $\sigma$.
+  \item Compute the Gaussian transition negative log-likelihood
+        $\mathcal L_{\mathrm{tr}}$. This term estimates the diffusion
+        intensity because $\sigma$ controls the transition variance.
+  \item Add the weighted transition likelihood to the PINN data, initial, and
+        physics losses, then backpropagate through the full objective to update
+        $(\eta,a,b,c)$.
+  \item After training, report
+        $\widehat r=r(\widehat a)$,
+        $\widehat K=K(\widehat b)$, and
+        $\widehat\sigma=\sigma(\widehat c)$.
+\end{enumerate}
+
+The stochastic fit uses two complementary sources of information. The PINN
+terms estimate a smooth population drift trajectory and keep that trajectory
+close to logistic growth. The transition likelihood estimates how much
+short-time variability remains around the logistic drift. Consequently,
+$\sigma$ is identified from the observed increments, not from the pointwise
+distance between the PINN curve and the data.
+
+After training, the stochastic logistic SDE was simulated with
+Euler-Maruyama. Each trial-specific simulation starts from its observed initial
+value $y_0^{[j]}$. The reported stochastic mean and central 90 percent
+predictive interval use 5000 Monte Carlo paths. In the numerical table,
+``Stochastic Logistic PINN Drift'' refers to the fitted neural trajectory
+$u_\eta$, whereas ``Stochastic Logistic SDE Mean'' refers to the Monte Carlo
+mean of the fitted SDE.

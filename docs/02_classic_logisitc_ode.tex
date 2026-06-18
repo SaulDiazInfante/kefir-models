@@ -1,0 +1,170 @@
+\subsection{Classical logistic ODE}
+            The classical baseline is the Verhulst logistic growth model
+    \citep{verhulst1838notice}, fitted here as a shared-parameter nonlinear
+    regression model. Unlike the neural models, it is fitted directly to the
+    original response values $y_i^{[j]}$. The only normalization used by
+    this baseline is the normalized time variable $\tau_i\in[0,1]$. Each
+    trial has its own observed initial condition, fixed at the first
+    measured value, but all trials share the same growth rate and carrying
+    capacity:
+
+    \begin{equation}
+        \label{eqn:logisitc_ode}
+        \frac{d y^{[j]}}{d\tau}
+            =
+            r y^{[j]}\left(1-\frac{y^{[j]}}{K}\right),
+            \qquad
+            y^{[j]}(0)=y_0^{[j]}=y^{[j]}(t_0).
+    \end{equation}
+
+    The exact solution used in the fit is
+
+    \begin{equation}
+        \label{eqn:sol_det_logistic}
+        y^{[j]}(\tau)
+            =
+            \dfrac{K}{
+                1 +
+                \left(
+                    \dfrac{K - y_0^{[j]}}{ y_0^{[j]} }
+                \right)
+                \exp(-r\tau)
+            }.
+    \end{equation}
+
+        The unknown parameters of the classical fit are only $r$ and $K$; the
+    initial values $y_0^{[j]}$ are taken from the data and are not
+    optimized. The fit also requires positive observations, because the
+    closed-form logistic curve and the ratio $(K-y_0^{[j]})/y_0^{[j]}$ are
+    only meaningful for positive initial values.
+    Missing observations, if present, are excluded through the observed
+    index set $\Omega$.
+
+        The fitted parameters must satisfy $r>0$ and $K>\max_j y_0^{[j]}$.
+    Instead of optimizing constrained parameters directly, the
+    implementation optimizes two unconstrained real variables
+    $a, b \in\mathbb R$ and maps them to valid physical parameters with a
+    $\operatorname{softplus}$ transformation:
+
+    \begin{equation}
+        r = \operatorname{softplus}(a)+10^{-6},
+            \qquad
+            K = K_{\min} +
+            \operatorname{softplus}(b)+10^{-6},
+    \end{equation}
+    where
+    $
+        \displaystyle
+        K_{\min}
+     :=
+        \max_{j \in J}
+       \Big\{
+                y_0^{[j]}
+       \Big\}
+            +10^{-3}
+    $
+    and
+    $$
+        \operatorname{softplus}(x)=\log(1+\exp(x)).
+    $$
+
+        The $\operatorname{softplus}$ function is a smooth differentiable
+    approximation to the positive part function. It maps every real number
+    to a positive value, behaves approximately like $\exp(x)$ for large
+    negative $x$, and behaves approximately like $x$ for large positive
+    $x$. This is useful for gradient-based fitting:
+    Adam can update the unconstrained variables $a$ and $b$ freely, while
+    the reported parameters $r$ and $K$ remain positive and the carrying
+    capacity stays above every initial condition. The small constants
+    $10^{-6}$ and $10^{-3}$ are numerical safeguards that avoid zero growth
+    and avoid a carrying capacity equal to an initial value.
+
+        The raw parameters are initialized by applying the inverse softplus
+    map. In the
+    implementation, this gives an initial growth rate near $3.0$ on the
+    normalized time scale, and an initial carrying capacity slightly above the
+    largest observed response. At each training epoch the code applies the
+    softplus    transformation and evaluates the exact logistic solution for
+    all trials and all observation times.
+
+        The fitting criterion is the masked original-scale mean squared error
+    \begin{equation}
+        \label{eqn:likelihood_ode}
+          \mathcal L_{\mathrm{logistic}}(r,K)
+          =
+            \frac{1}{n}
+            \sum_{(i,j)\in\Omega}
+            \left(y_i^{[j]}-\widehat y^{[j]}(\tau_i)\right)^2.
+    \end{equation}
+
+    This can also be interpreted as a maximum-likelihood fit after adding a
+    Gaussian observation-error model on the original response scale:
+    \begin{equation}
+        y_i^{[j]}
+        =
+        \widehat y^{[j]}(\tau_i;r,K)+\varepsilon_i^{[j]},
+        \qquad
+        \varepsilon_i^{[j]}\stackrel{\mathrm{ind}}{\sim}
+        \mathcal N(0,s^2).
+    \end{equation}
+
+        For fixed $s^2$, maximizing this Gaussian likelihood over $r$ and
+    $K$ is equivalent to minimizing the sum of squared residuals.
+    If $s^2$ is also unknown, profiling it out gives
+    $$
+        \widehat s^2(r,K)
+        =
+            \frac{1}{n}
+            \sum_{(i,j)\in\Omega}
+            \left(y_i^{[j]}-\widehat y^{[j]}(\tau_i;r,K)\right)^2,
+    $$
+and the maximizing values of $r$ and $K$ are again the nonlinear least-squares
+solution. Therefore the implemented classical fit is a profiled Gaussian
+maximum-likelihood estimate under an independent additive measurement-error
+assumption. It is not a transition likelihood for a stochastic logistic process.
+
+The code backpropagates through the closed-form expression above and applies an
+Adam update \citep{kingma2015adam} to $a$ and $b$. No numerical ODE solver is
+used for this classical baseline. This model was trained for 3000 Adam epochs
+with learning rate $5\times10^{-2}$.
+
+The inverse-problem procedure for this classical logistic model is therefore:
+
+\begin{enumerate}
+  \item Read the observed trial matrix and keep only entries in $\Omega$.
+  \item Fix the initial condition of each trial at its observed first value
+        $y_0^{[j]}$; these initial values are not optimized.
+  \item Choose unconstrained optimization variables $a$ and $b$, and transform
+        them into admissible physical parameters $r(a)>0$ and $K(b)>K_{\min}$
+        with the softplus maps above.
+  \item For the current values of $a$ and $b$, compute the exact logistic curve
+        $\widehat y^{[j]}(\tau_i;r,K)$ for every trial and observation time.
+  \item Evaluate the masked residual objective
+        $\mathcal L_{\mathrm{logistic}}(r,K)$, using only observed entries.
+  \item Use automatic differentiation through the closed-form solution to
+        compute $\partial \mathcal L_{\mathrm{logistic}}/\partial a$ and
+        $\partial \mathcal L_{\mathrm{logistic}}/\partial b$.
+  \item Apply an Adam step to $a$ and $b$, then repeat until the fixed epoch
+        budget is reached.
+  \item Report $\widehat r=r(\widehat a)$ and
+        $\widehat K=K(\widehat b)$, and evaluate fitted curves and residual
+        metrics on the original data scale.
+\end{enumerate}
+
+In this baseline the inverse problem is low-dimensional: only two unknown
+physical parameters are estimated. The use of gradient descent is an
+implementation choice; mathematically, the estimator is the nonlinear
+least-squares solution for the two-parameter logistic curve under fixed
+trial-specific initial conditions.
+The fitted values were
+$$
+  \widehat r = 7.705769,
+  \qquad
+  \widehat K = 47.860203.
+$$
+Since $\tau=t/168$ for these data, the growth rate in the original time scale
+is approximately
+$$
+    \widehat r/168=0.045868
+$$
+per original time unit.

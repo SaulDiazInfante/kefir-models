@@ -28,6 +28,7 @@ env/
 .idea/
 .vscode/
 .DS_Store
+.directory
 *.swp
 
 # Agent metadata (from source project)

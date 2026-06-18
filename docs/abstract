@@ -1,0 +1,15 @@
+\begin{abstract}
+    This report compares five dynamical descriptions of water kefir
+    fermentation data: a classical logistic ordinary differential equation,
+    a deterministic Neural ODE, a Neural SDE, a deterministic logistic
+    PINN, and a stochastic logistic PINN/SDE. The data consist of three
+    trials measured at 15 time points, giving 45 scalar observations. The
+    Neural ODE and the two logistic PINNs are treated as population models:
+    the three trials are interpreted as repeated realizations of the same
+    experiment, so one fitted curve is compared with all trial
+    observations. The stochastic logistic PINN additionally identifies a
+    multiplicative diffusion parameter and generates
+    Monte Carlo predictive intervals. The reported residual criteria are
+    in-sample diagnostics; out-of-sample MSE should be computed with a
+    time-respecting train/test split.
+\end{abstract}

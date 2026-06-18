@@ -1,0 +1,59 @@
+
+The stochastic neural model is an stratonovich diffusion with neural drift and
+diffusioncoefficients, following the Neural SDE modeling idea
+\citep{tzen2019neuralsde,kidger2021neuralsdegan}:
+$$
+  dZ_\tau
+  =
+  \mu_\theta(\tau,Z_\tau)\,d\tau
+  +
+  \sigma_\phi(\tau,Z_\tau)\, \circ dW_\tau.
+$$
+Both the drift $\mu_\theta$ and the raw diffusion network use the same
+architecture as the Neural ODE: two hidden layers, 32 units per hidden layer,
+and $\tanh$ activation. The diffusion is constrained to be positive by
+$$
+  \sigma_\phi(\tau,z)
+  =
+  \operatorname{softplus}(g_\phi(\tau,z))+\sigma_{\min},
+  \qquad
+  \sigma_{\min}=10^{-3}.
+$$
+The total trainable parameter count is 2370, one copy of the 1185-parameter
+network for the drift and one for the diffusion.
+
+The SDE was trained with an Euler-Maruyama Gaussian transition likelihood
+\citep{kloeden1992numerical}. For successive observations separated by
+$\Delta\tau_i=\tau_{i+1}-\tau_i$, the approximation is
+$$
+  Z_{i+1}^{[j]}\mid Z_i^{[j]}
+  \sim
+  \mathcal N\left(
+    Z_i^{[j]}+\mu_\theta(\tau_i,Z_i^{[j]})\Delta\tau_i,\,
+    \sigma_\phi(\tau_i,Z_i^{[j]})^2\Delta\tau_i
+  \right).
+$$
+With the variance floor used in the implementation, define
+$$
+  m_i^{[j]}=z_i^{[j]}+\mu_\theta(\tau_i,z_i^{[j]})\Delta\tau_i,
+  \qquad
+  v_i^{[j]}=\sigma_\phi(\tau_i,z_i^{[j]})^2\Delta\tau_i+10^{-6}.
+$$
+The minimized negative log-likelihood is
+$$
+  \mathcal L_{\mathrm{SDE}}(\theta,\phi)
+  =
+  \frac{1}{|\Omega_{\mathrm{tr}}|}
+  \sum_{(i,j)\in\Omega_{\mathrm{tr}}}
+  \frac{1}{2}
+  \left[
+    \log(2\pi v_i^{[j]})
+    +
+    \frac{(z_{i+1}^{[j]}-m_i^{[j]})^2}{v_i^{[j]}}
+  \right],
+$$
+where $\Omega_{\mathrm{tr}}$ is the set of adjacent observed transitions.
+Training used Adam for 1000 epochs with learning rate $5\times10^{-3}$ and
+weight decay $10^{-4}$ \citep{kingma2015adam}. After training, 1000 Monte Carlo
+paths were simulated to estimate predictive means and central 90 percent
+intervals.

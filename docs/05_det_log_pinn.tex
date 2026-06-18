@@ -1,0 +1,191 @@
+The two new models solve the inverse problem for the logistic growth law with a
+physics-informed neural network (PINN) \citep{raissi2019physics}. Unlike the
+classical logistic baseline, the PINN does not evaluate the closed-form
+logistic solution during training. Instead, it learns a neural trajectory
+$u_\eta(\tau)$ and estimates the physical parameters by penalizing violations
+of the differential equation.
+
+The unknowns in the deterministic PINN inverse problem are
+$$
+  \eta,\quad r,\quad K,
+$$
+where $\eta$ denotes all neural-network weights and biases. The unknowns in the
+stochastic PINN inverse problem are
+$$
+  \eta,\quad r,\quad K,\quad \sigma.
+$$
+The role of the neural trajectory $u_\eta$ is to provide a differentiable
+surrogate for the unobserved continuous-time biomass curve. The physical
+parameters are then identified by forcing this differentiable surrogate to
+match the measurements and to satisfy the logistic differential equation at
+collocation points between measurements. This is the main distinction from the
+closed-form classical logistic fit: the PINN estimates a curve and the
+parameters jointly.
+
+\subsubsection{Shared PINN trajectory architecture}
+
+Both logistic PINNs use a scalar neural trajectory
+$$
+  u_\eta:[0,1]\rightarrow \mathbb R_+,
+  \qquad
+  \widehat y(t)=u_\eta(\tau(t)).
+$$
+The network input is the normalized time $\tau$. The hidden architecture has
+three fully connected hidden layers, 32 units in each hidden layer, and
+hyperbolic tangent activation:
+$$
+  h_1=\tanh(W_1\tau+b_1),\qquad
+  h_\ell=\tanh(W_\ell h_{\ell-1}+b_\ell),\quad \ell=2,3,
+$$
+followed by one scalar output layer. Positivity of the fitted biomass
+trajectory is enforced by
+$$
+  u_\eta(\tau)=\operatorname{softplus}(W_o h_3+b_o)+10^{-6}.
+$$
+The trajectory network has 2209 trainable weights and biases:
+$$
+\begin{aligned}
+  \hbox{input to hidden 1:}&\quad 1\cdot 32+32=64,\\
+  \hbox{hidden 1 to hidden 2:}&\quad 32\cdot 32+32=1056,\\
+  \hbox{hidden 2 to hidden 3:}&\quad 32\cdot 32+32=1056,\\
+  \hbox{hidden 3 to output:}&\quad 32\cdot 1+1=33.
+\end{aligned}
+$$
+Thus the deterministic logistic PINN has $2209+2=2211$ fitted parameters after
+adding the raw variables for $r$ and $K$, while the stochastic logistic PINN
+has $2209+3=2212$ fitted parameters after adding the raw variable for
+$\sigma$.
+
+The carrying capacity is constrained to remain above all observed responses,
+not only above the first row. Define
+$$
+  K_{\min}=\max_{(i,j)\in\Omega} y_i^{[j]}+10^{-3}.
+$$
+The deterministic PINN optimizes unconstrained variables $a,b\in\mathbb R$ and
+maps them to physical parameters by
+$$
+  r=\operatorname{softplus}(a)+10^{-8},
+  \qquad
+  K=K_{\min}+\operatorname{softplus}(b)+10^{-8}.
+$$
+The stochastic PINN adds a third unconstrained variable $c$ and uses
+$$
+  \sigma=\operatorname{softplus}(c)+10^{-8}.
+$$
+Here $r$ is on the original time scale, because the physics residual includes
+the time-scale factor $t_{\max}-t_{\min}=168$.
+
+The PINN initialization is chosen to start from a stable positive trajectory.
+The final network layer is initialized so that $u_\eta(\tau)$ is approximately
+constant at the mean observed initial level,
+$$
+  \bar y_0=\frac{1}{J}\sum_{j=1}^J y_0^{[j]}.
+$$
+The initial carrying capacity is set slightly above the largest observed
+response, and the initial growth rate is estimated from the first and last
+observed means using the analytic logistic relationship. If that estimate is
+not admissible, a small positive default value is used. The stochastic fit
+starts from a positive multiplicative diffusion value, $\sigma=0.02$, before
+gradient-based optimization.
+
+\subsubsection{Deterministic logistic PINN}
+
+The deterministic inverse problem is based on the original-time logistic ODE
+$$
+  \frac{dX}{dt}=rX\left(1-\frac{X}{K}\right).
+$$
+Since the PINN is differentiated with respect to normalized time $\tau$, the
+residual uses
+$$
+  \frac{du_\eta}{d\tau}
+  =
+  (t_{\max}-t_{\min})\,
+  r u_\eta(\tau)\left(1-\frac{u_\eta(\tau)}{K}\right).
+$$
+Let $\{\xi_m\}_{m=1}^M$ be $M=128$ uniformly spaced collocation points in
+$[0,1]$. The data, initial-condition, and physics losses are
+$$
+  \mathcal L_{\mathrm{data}}(\eta)
+  =
+  \frac{1}{n}
+  \sum_{(i,j)\in\Omega}
+  \left(
+    \frac{u_\eta(\tau_i)-y_i^{[j]}}{s_y}
+  \right)^2,
+$$
+$$
+  \mathcal L_{\mathrm{init}}(\eta)
+  =
+  \frac{1}{J}
+  \sum_{j=1}^J
+  \left(
+    \frac{u_\eta(0)-y_0^{[j]}}{s_y}
+  \right)^2,
+$$
+and
+$$
+  \mathcal L_{\mathrm{phys}}(\eta,r,K)
+  =
+  \frac{1}{M}
+  \sum_{m=1}^M
+  \left[
+    \frac{
+      \dfrac{du_\eta}{d\tau}(\xi_m)
+      -
+      (t_{\max}-t_{\min})r u_\eta(\xi_m)
+      \left(1-\dfrac{u_\eta(\xi_m)}{K}\right)
+    }{s_y}
+  \right]^2 .
+$$
+The deterministic PINN objective is
+$$
+  \mathcal L_{\mathrm{detPINN}}
+  =
+  \mathcal L_{\mathrm{data}}
+  +
+  \lambda_0\mathcal L_{\mathrm{init}}
+  +
+  \lambda_{\mathrm{phys}}\mathcal L_{\mathrm{phys}},
+$$
+with $\lambda_0=1$ and $\lambda_{\mathrm{phys}}=1$ in the reported run. This
+fit uses one population trajectory against all three replicate trials. It is
+therefore more flexible than the classical two-parameter logistic regression,
+because the neural trajectory can absorb deviations from the exact analytic
+curve, but it is still regularized toward the logistic differential equation.
+Training used Adam for 3000 epochs with learning rate $5\times10^{-3}$.
+
+The deterministic PINN inverse problem is solved by the following optimization
+loop:
+\begin{enumerate}
+  \item Build the observation tensor, mask missing entries, compute $s_y$, and
+        map observation times to $\tau_i\in[0,1]$.
+  \item Create the collocation grid
+        $\xi_1,\ldots,\xi_M$ on $[0,1]$. These points are not additional data;
+        they are locations where the logistic differential equation is
+        enforced.
+  \item Initialize the trajectory network $u_\eta$ and raw physical variables
+        $a,b$. The reported parameters at every epoch are obtained from
+        $r=\operatorname{softplus}(a)+10^{-8}$ and
+        $K=K_{\min}+\operatorname{softplus}(b)+10^{-8}$.
+  \item Evaluate the population trajectory at the observation times to compute
+        $\mathcal L_{\mathrm{data}}$ and $\mathcal L_{\mathrm{init}}$.
+  \item Evaluate $u_\eta(\xi_m)$ at the collocation points and use automatic
+        differentiation to compute $du_\eta/d\tau$ at those same points.
+  \item Form the residual
+        $du_\eta/d\tau-(t_{\max}-t_{\min})r u_\eta(1-u_\eta/K)$ and compute
+        $\mathcal L_{\mathrm{phys}}$.
+  \item Add the weighted terms to obtain
+        $\mathcal L_{\mathrm{detPINN}}$, backpropagate through both the
+        network and the softplus-transformed parameters, and update
+        $(\eta,a,b)$ with Adam.
+  \item After training, transform the final raw variables to
+        $\widehat r$ and $\widehat K$, and evaluate $u_{\widehat\eta}(\tau)$
+        on the observed and dense plotting grids.
+\end{enumerate}
+
+The gradients with respect to $r$ and $K$ are not computed by finite
+differences. They are obtained by automatic differentiation through the loss
+terms. In particular, the physics loss connects $r$ and $K$ directly to the
+neural trajectory derivative, so the fitted parameters are those that make the
+learned curve both close to the observations and dynamically consistent with
+logistic growth.

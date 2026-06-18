@@ -1,0 +1,125 @@
+All model comparison metrics were computed on the original response scale using
+the fitted mean trajectory for each model. For models that produce one curve per
+trial, write this fitted value as $\widehat y_i^{[j]}$. For the single-curve
+Neural ODE, $\widehat y_i^{[j]}=\widehat y_i$ for every trial $j$. Let
+$$
+  \mathrm{SSE}
+  =
+  \sum_{(i,j)\in\Omega}(y_i^{[j]}-\widehat y_i^{[j]})^2,
+  \qquad
+  \mathrm{SST}
+  =
+  \sum_{(i,j)\in\Omega}(y_i^{[j]}-\bar y)^2.
+$$
+The root mean squared error is
+$$
+  \mathrm{RMSE}
+  =
+  \sqrt{\frac{\mathrm{SSE}}{n}},
+$$
+and the coefficient of determination is
+$$
+  R^2
+  =
+  1-\frac{\mathrm{SSE}}{\mathrm{SST}}.
+$$
+
+The numerical table below reports in-sample residual diagnostics: the models
+are trained on all observed entries in $\Omega$, and the same entries are used
+to compute RMSE and $R^2$. This is appropriate for checking interpolation
+quality, but it is not an out-of-sample generalization error. To estimate a
+test MSE for this time-series problem, the split should be made by time rather
+than by randomly sampling individual observations. Let
+$$
+  I_{\mathrm{train}}\subset \{0,\ldots,T-1\},
+  \qquad
+  I_{\mathrm{test}}\subset \{0,\ldots,T-1\},
+  \qquad
+  I_{\mathrm{train}}\cap I_{\mathrm{test}}=\varnothing,
+$$
+and define
+$$
+  \Omega_{\mathrm{train}}
+  =
+  \{(i,j)\in\Omega:i\in I_{\mathrm{train}}\},
+  \qquad
+  \Omega_{\mathrm{test}}
+  =
+  \{(i,j)\in\Omega:i\in I_{\mathrm{test}}\}.
+$$
+The Neural ODE is then trained by replacing $\Omega$ with
+$\Omega_{\mathrm{train}}$ in $\mathcal L_{\mathrm{ODE}}(\theta)$, while the test
+MSE is computed as
+$$
+  \mathrm{MSE}_{\mathrm{test}}
+  =
+  \frac{1}{|\Omega_{\mathrm{test}}|}
+  \sum_{(i,j)\in\Omega_{\mathrm{test}}}
+  \left(y_i^{[j]}-\widehat y_i\right)^2.
+$$
+For these data, a natural forecasting split is to train on early times and test
+on the last few time points, for example training through $t=132$ and testing
+at $t=144,156,168$. With only 15 time points, an alternative is a rolling
+leave-last-time-out protocol, such as training through $t=120$ and testing at
+$t=132$, then training through $t=132$ and testing at $t=144$, and so on.
+
+For AIC and BIC \citep{akaike1974newlook,schwarz1978estimating}, residuals were
+modeled as independent Gaussian errors with
+common variance $\sigma^2$. The maximum likelihood variance estimate is
+$$
+  \widehat\sigma^2 = \frac{\mathrm{SSE}}{n},
+$$
+which gives the maximized log-likelihood
+$$
+  \log \widehat L
+  =
+  -\frac{n}{2}
+  \left[
+    \log(2\pi)+1+\log(\widehat\sigma^2)
+  \right].
+$$
+The criteria are
+$$
+  \mathrm{AIC}=2k-2\log\widehat L,
+  \qquad
+  \mathrm{BIC}=k\log(n)-2\log\widehat L.
+$$
+Here $k=p+1$, where $p$ is the number of fitted dynamical parameters and the
+additional parameter is the residual variance. Thus $k=3$ for the classical
+logistic model, $k=1186$ for the Neural ODE, $k=2371$ for the Neural SDE,
+$k=2212$ for the deterministic logistic PINN, and $k=2213$ for the stochastic
+logistic PINN/SDE.
+Initial conditions are not counted as fitted parameters because they are taken
+directly from the first row of the data; for the single-curve Neural ODE this
+means using $y_0=J^{-1}\sum_{j=1}^J y_0^{[j]}$.
+
+The 90 percent interval coverage is computed for models that produce a
+predictive distribution rather than only a fitted mean curve: the Neural SDE
+and the stochastic logistic SDE. Let $B$ be the number of simulated SDE paths
+($B=1000$ for the Neural SDE comparison and $B=5000$ for the stochastic
+logistic SDE) and let
+$Y_i^{(b)[j]}$ denote the simulated original-scale value for path $b$, time
+$i$, and trial $j$. For interval level $\gamma=0.90$, set
+$\alpha=(1-\gamma)/2=0.05$ and define the pointwise empirical interval
+$$
+  L_i^{[j]}=Q_{\alpha}\left(\{Y_i^{(b)[j]}\}_{b=1}^B\right),
+  \qquad
+  U_i^{[j]}=Q_{1-\alpha}\left(\{Y_i^{(b)[j]}\}_{b=1}^B\right),
+$$
+where $Q_q$ is the empirical $q$-quantile. The reported empirical coverage is
+$$
+  \widehat C_{0.90}
+  =
+  \frac{1}{n}
+  \sum_{(i,j)\in\Omega}
+  \mathbf 1\{L_i^{[j]}\le y_i^{[j]}\le U_i^{[j]}\}.
+$$
+Thus an observed data point is counted as covered if it lies between the 5
+percent and 95 percent Monte Carlo quantiles for the same time and trial. For
+the Neural SDE, the reported value $0.9333$ means that 42 of the 45 observed
+responses fall inside their corresponding central 90 percent intervals. For
+the stochastic logistic SDE, the reported value $0.8222$ means that 37 of the
+45 observed responses fall inside their corresponding central 90 percent
+intervals. The mean interval width is the average of $U_i^{[j]}-L_i^{[j]}$ over
+the same observed entries. These are in-sample empirical calibration
+diagnostics, not out-of-sample guarantees.
