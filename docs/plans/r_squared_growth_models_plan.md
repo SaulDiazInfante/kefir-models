@@ -33,6 +33,17 @@ principled comparison.
 5. Use all **45** observations, including $t_0$, for the trajectory $R^2$,
    matching the existing comparison tables.
 
+Bayesian part (Part B):
+
+6. Implement with **Stan via CmdStanPy**.
+7. Start with **process noise only** (exact likelihoods); add measurement
+   error in a second stage, after simulation shows that $\sigma$ and $\tau$
+   are identifiable.
+8. Fit both a **pooled** model (one $(r, \sigma)$ for all runs) and a
+   **hierarchical** model (run-specific parameters), and compare them.
+9. Build the prior for $r$ from the **thesis data** (Proenza Delgado, 2025),
+   using only experiments other than the three runs analyzed here.
+
 ---
 
 ## Part A — $R^2$ with point estimates
@@ -172,14 +183,46 @@ $$
 $$
 
 with weakly informative priors on the hyperparameters. With only three runs,
-$s_r$ and $s_\sigma$ need informative half-normal priors; the pooled model
-(one $r$, one $\sigma$) serves as the baseline.
+$s_r$ and $s_\sigma$ need informative half-normal priors. Both the pooled model
+(one $r$, one $\sigma$) and the hierarchical model are fitted and compared
+with leave-future-out cross-validation (B6).
 
 ### B4. Priors
 
-- $r$ (1/h): weakly informative lognormal centered on the frequentist
-  estimates' order of magnitude ($\approx 0.01$–$0.05$), or on literature
-  values for water kefir grain growth (to be compiled).
+- $r$ (1/h): informative lognormal prior derived from the **thesis data**
+  (Proenza Delgado, 2025). Use only growth rates from experiments other than
+  the three runs analyzed here (for example, other substrates, inoculum
+  levels, or treatments); fits to these same runs would use the data twice
+  and produce overconfident posteriors. Steps: (1) list the thesis
+  experiments and their fitted growth parameters; (2) convert deterministic
+  Gompertz/logistic rates to the $r$ parameterization used here (same $K$
+  scaling, units 1/h); (3) set the lognormal location to the pooled log-rate
+  and inflate its scale to cover between-experiment variation; (4) check
+  sensitivity against a weakly informative prior spanning about
+  0.005–0.1 per hour.
+
+  Available source: thesis Table 6 fits the deterministic logistic curve
+  $y = a/(1 + e^{-k(t - t_c)})$ to the control and four ultrasound
+  treatments of the same protocol (piloncillo 9% w/v, 25 °C, three
+  repetitions, sampling every 12 h for 168 h):
+
+  | Condition | $k$ (1/h) | $a$ (g/L) | $R^2$ |
+  |---|---|---|---|
+  | Control | 0.046 ± 0.00 | 47.81 ± 0.57 | 0.9868 |
+  | 20 W/cm², 15 s | 0.052 ± 0.002 | 43.87 ± 0.28 | 0.9949 |
+  | 20 W/cm², 60 s | 0.041 ± 0.005 | 42.10 ± 0.89 | 0.9631 |
+  | 34 W/cm², 15 s | 0.044 ± 0.005 | 37.50 ± 0.57 | 0.9709 |
+  | 34 W/cm², 60 s | 0.047 ± 0.004 | 42.76 ± 0.58 | 0.9806 |
+
+  The CSV range (about 14–52) resembles the control curve, so the control
+  row is excluded until the CSV treatment identity is confirmed. The four
+  ultrasound rates (0.041–0.052 1/h) inform the logistic prior directly,
+  since $k$ and $r$ share units and meaning. For Gompertz and von
+  Bertalanffy, the rate parameters have different meanings; map them by
+  matching a shared feature of the curves (for example, time to reach half
+  of $K$) and widen the prior accordingly. The thesis control $R^2 = 0.9868$
+  also serves as a benchmark for the deterministic logistic fit in Part A
+  (note that the thesis fits $a$ freely, whereas here $K$ is fixed).
 - $\sigma$ (1/h$^{1/2}$) and $\tau$: half-normal or exponential priors.
 - Prior predictive checks: simulated trajectories must stay within plausible
   biomass ranges.
@@ -189,7 +232,7 @@ $s_r$ and $s_\sigma$ need informative half-normal priors; the pooled model
 1. Prior predictive checks.
 2. Simulation-based calibration and parameter recovery on synthetic data with
    the observed design (3 runs, 15 points, $\Delta = 12$ h).
-3. Fit to the data with HMC (Stan via CmdStanPy, or NumPyro); diagnostics
+3. Fit to the data with HMC in Stan (CmdStanPy); diagnostics
    $\hat R < 1.01$, effective sample sizes, no divergences.
 4. Posterior predictive checks: trajectories, prediction-interval coverage,
    residual Q–Q plots.
@@ -236,9 +279,9 @@ $s_r$ and $s_\sigma$ need informative half-normal priors; the pooled model
 2. Part A: ODE fits, SDE medians, both $R^2$ versions, tests in CI.
 3. Part B: Gompertz and von Bertalanffy Bayesian fits (exact likelihoods),
    then deterministic models, then the logistic SDE.
-4. Measurement-error and hierarchical extensions, after identifiability
-   checks.
-5. Comparison table and figures; transfer results to the manuscript.
+4. Pooled and hierarchical fits; thesis-based prior for $r$.
+5. Measurement-error extension (stage 2), after identifiability checks.
+6. Comparison table and figures; transfer results to the manuscript.
 
 ## References
 
