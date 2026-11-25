@@ -202,17 +202,13 @@ with leave-future-out cross-validation (B6).
   0.005–0.1 per hour.
 
   Available source: thesis Table 6 fits the deterministic logistic curve
-  $y = a/(1 + e^{-k(t - t_c)})$ to the control and four ultrasound
-  treatments of the same protocol (piloncillo 9% w/v, 25 °C, three
+  $y = a/(1 + e^{-k(t - t_c)})$ to the controlof the same protocol
+  (piloncillo 9% w/v, 25 °C, three
   repetitions, sampling every 12 h for 168 h):
 
   | Condition | $k$ (1/h) | $a$ (g/L) | $R^2$ |
   |---|---|---|---|
   | Control | 0.046 ± 0.00 | 47.81 ± 0.57 | 0.9868 |
-  | 20 W/cm², 15 s | 0.052 ± 0.002 | 43.87 ± 0.28 | 0.9949 |
-  | 20 W/cm², 60 s | 0.041 ± 0.005 | 42.10 ± 0.89 | 0.9631 |
-  | 34 W/cm², 15 s | 0.044 ± 0.005 | 37.50 ± 0.57 | 0.9709 |
-  | 34 W/cm², 60 s | 0.047 ± 0.004 | 42.76 ± 0.58 | 0.9806 |
 
   The CSV range (about 14–52) resembles the control curve, so the control
   row is excluded until the CSV treatment identity is confirmed. The four
