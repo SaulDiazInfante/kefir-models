@@ -1,11 +1,11 @@
 The stochastic inverse problem augments the same logistic drift with
-multiplicative process noise:
+multiplicative It\^o process noise:
 $$
   dX_t
   =
   rX_t\left(1-\frac{X_t}{K}\right)\,dt
   +
-  \sigma X_t\, \circ dW_t .
+  \sigma X_t\,dW_t .
 $$
 The stochastic PINN retains the same neural trajectory, data loss, initial
 loss, and physics residual used by the deterministic PINN. The additional
@@ -110,9 +110,17 @@ $\sigma$ is identified from the observed increments, not from the pointwise
 distance between the PINN curve and the data.
 
 After training, the stochastic logistic SDE was simulated with
-Euler-Maruyama. Each trial-specific simulation starts from its observed initial
+Euler-Maruyama on a fixed internal grid, with maximum step 0.05 in the
+original time units. Requested output times are evaluated by linear
+interpolation of this approximation; changing the plot resolution does not
+change the integrated paths at shared times. Each trial-specific simulation starts from its observed initial
 value $y_0^{[j]}$. The reported stochastic mean and central 90 percent
 predictive interval use 5000 Monte Carlo paths. In the numerical table,
 ``Stochastic Logistic PINN Drift'' refers to the fitted neural trajectory
 $u_\theta$, whereas ``Stochastic Logistic SDE Mean'' refers to the Monte Carlo
 mean of the fitted SDE.
+The parameters are held fixed in these simulations. The intervals describe
+process variability conditional on observed initial values and fitted
+parameters; they include neither parameter uncertainty nor a separate
+measurement-error model and are not Bayesian credible intervals. Positivity
+projection in Euler-Maruyama is counted in the run metadata.

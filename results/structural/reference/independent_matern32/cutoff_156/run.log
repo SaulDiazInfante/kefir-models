@@ -1,0 +1,22 @@
+/home/saul/anaconda3/lib/python3.12/site-packages/scipy/optimize/_numdiff.py:590: RuntimeWarning: invalid value encountered in subtract
+  df = fun(x) - f0
+independent matern32 cutoff=156.0 chain=1 acceptance=0.229
+independent matern32 cutoff=156.0 chain=2 acceptance=0.234
+independent matern32 cutoff=156.0 chain=3 acceptance=0.225
+independent matern32 cutoff=156.0 chain=4 acceptance=0.211
+                parameter  rank_split_rhat    bulk_ess    tail_ess
+                  initial         1.001424 3280.441165 4765.388133
+                 capacity         1.001301 3458.250342 4613.473866
+            rate_original         1.001056 3448.821412 4443.943503
+               process_sd         1.003107 1579.677810 2841.508131
+           observation_sd         1.003088 1332.227269  649.210886
+correlation_time_original         1.002096 2593.892768 3673.722150
+             coordinate_0         1.001424 3280.441165 4765.388133
+             coordinate_1         1.001694 3420.262922 5436.260886
+             coordinate_2         1.001056 3448.821412 4443.943503
+             coordinate_3         1.002096 2593.892768 3673.722150
+             coordinate_4         1.003107 1579.677810 2841.508131
+             coordinate_5         1.003088 1332.227269  649.210886
+  kernel     sharing  cutoff  noise_multiplier  full_fit     task  computation_passed  evaluation_count     rmse  coverage  mean_width  marginal_predictive_nll  joint_predictive_nll_per_entry  parameter_log_variance  latent_log_variance  measurement_log_variance  posterior_prediction_draws  interval_score  mean_bias  above_upper  below_lower
+matern32 independent   156.0               1.0     False  rollout                True                 3 3.098205  0.666667    5.713035                 3.033633                        2.883633                0.000097             0.000436                  0.000803                       12000       16.551768   2.862514            1            0
+matern32 independent   156.0               1.0     False one_step                True                 3 3.098205  0.666667    5.713035                 3.033633                        2.883633                0.000097             0.000436                  0.000803                       12000       16.551768   2.862514            1            0

@@ -1,0 +1,67 @@
+{
+  "arguments": {
+    "cutoff": 132.0,
+    "epochs": 1000,
+    "seed": 7,
+    "paths": 2000,
+    "output_dir": "results/rev07/cutoff_132",
+    "reuse_fits": true
+  },
+  "candidates": [
+    [
+      "wide_euler",
+      32,
+      2,
+      1,
+      0.0001
+    ],
+    [
+      "wide_moments",
+      32,
+      2,
+      16,
+      0.0001
+    ],
+    [
+      "compact_euler",
+      8,
+      1,
+      1,
+      0.0001
+    ],
+    [
+      "compact_moments",
+      8,
+      1,
+      16,
+      0.0001
+    ],
+    [
+      "compact_moments_regularized",
+      8,
+      1,
+      16,
+      0.01
+    ]
+  ],
+  "scaling": {
+    "time_min": 0.0,
+    "time_scale": 132.0,
+    "value_mean": 37.313934326171875,
+    "value_std": 10.875862121582031
+  },
+  "data_sha256": "230236e3be3eee57ca1821a65a3bb50cb09d28d097ce5aea9746cc901fc3a1b1",
+  "python": "3.12.2",
+  "torch": "2.7.1+cu126",
+  "numpy": "1.26.4",
+  "source_sha256": {
+    "/home/saul/projects/kefir-models/scripts/investigate_rev07.py": "47953a9a88c679c1b9a4d5a99720cbbc784da3b636cc4bfa228c5b13cd0f260e",
+    "src/kefir_models/transition_moments.py": "516b33bd97195a7cea7e0e1ec19510e6aa08c531b0ab670bdcc8c4d8828c62b1",
+    "src/kefir_models/forecast_validation.py": "a8ccf7e5afd0144bbdcc22c8e131da41d9f53bb2778c4ced5b5fa0065abd4140"
+  },
+  "observation_models": {
+    "neural": "exact observed states, no measurement error",
+    "classical": "iid additive Gaussian measurement error"
+  },
+  "evaluation": "64-step Gaussian quadrature proxy; 3 simulation seeds; excludes conditioning row"
+}

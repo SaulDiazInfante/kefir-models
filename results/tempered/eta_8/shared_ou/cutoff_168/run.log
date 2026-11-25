@@ -1,0 +1,23 @@
+shared ou eta=8.0 cutoff=168.0 chain=1 acceptance=0.231
+shared ou eta=8.0 cutoff=168.0 chain=2 acceptance=0.253
+shared ou eta=8.0 cutoff=168.0 chain=3 acceptance=0.251
+shared ou eta=8.0 cutoff=168.0 chain=4 acceptance=0.219
+                      parameter  rank_split_rhat    bulk_ess    tail_ess
+                        initial         1.001583 3702.824761 4084.784442
+                       capacity         1.001548 3347.418278 2864.354373
+                  rate_original         1.001176 4020.696517 5446.748809
+                     process_sd         1.001715 2475.404034 3679.235785
+                 observation_sd         1.000770 4915.566699 7111.783779
+      correlation_time_original         1.002512 2794.102763 3857.144212
+                   coordinate_0         1.001587 3702.824761 4084.784442
+                   coordinate_1         1.001395 4401.034567 4937.016741
+                   coordinate_2         1.001176 4020.696517 5446.748809
+                   coordinate_3         1.002512 2794.102763 3857.144212
+                   coordinate_4         1.001690 2475.404034 3679.235785
+                   coordinate_5         1.000821 4915.566699 7111.783779
+predictive_mean_time_15_trial_1         1.001290 3350.626374 3861.317762
+predictive_mean_time_15_trial_2         1.001290 3350.626374 3861.317762
+predictive_mean_time_15_trial_3         1.001290 3350.626374 3861.317762
+Empty DataFrame
+Columns: []
+Index: []

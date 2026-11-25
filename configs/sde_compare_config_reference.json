@@ -12,9 +12,10 @@
     "weight_decay": 0.0001,
     "min_diffusion": 0.001,
     "ode_method": "rk4",
-    "sde_paths": 10000,
+    "sde_paths": 1000,
+    "sde_max_step": 0.001,
     "interval_level": 0.9,
     "seed": 7,
-    "device": "cuda",
+    "device": "cpu",
     "plot": true
 }

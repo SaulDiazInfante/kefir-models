@@ -1,0 +1,55 @@
+{
+  "arguments": {
+    "kernel": "ou",
+    "sharing": "shared",
+    "cutoff": 120.0,
+    "noise_multiplier": 0.5,
+    "warmup": 6000,
+    "draws": 36000,
+    "prediction_draws": 12000,
+    "seed": 101,
+    "output_dir": "/home/saul/projects/kefir-models/results/structural/noise_half/shared_ou/cutoff_120",
+    "reuse_chains": false
+  },
+  "computation_passed": true,
+  "acceptance_by_chain": [
+    0.20183333333333334,
+    0.25377777777777777,
+    0.2448611111111111,
+    0.2236388888888889
+  ],
+  "map_objectives": [
+    43.57535502566431,
+    43.575355025664166
+  ],
+  "prior_coordinate_mean": [
+    2.3025850929940455,
+    1.0986122886681096,
+    -0.6931471805599453,
+    -0.6931471805599453,
+    -4.199705077879927,
+    -4.199705077879927
+  ],
+  "prior_coordinate_sd": [
+    1.5,
+    1.0,
+    1.25,
+    1.25,
+    1.0,
+    1.0
+  ],
+  "data_sha256": "230236e3be3eee57ca1821a65a3bb50cb09d28d097ce5aea9746cc901fc3a1b1",
+  "source_sha256": {
+    "/home/saul/projects/kefir-models/scripts/investigate_structural_discrepancy.py": "8a725ef5715cb25e9b96e5768bd28bb817fe976bce782803b89c63ab38d37e54",
+    "scripts/investigate_bayesian_observation.py": "c3326bb9ba043753f55d7123be58b5df926fdd48bf1b15138cec6135e4d20714",
+    "src/kefir_models/structural_discrepancy.py": "11ff481a782d214d4177a36a4c61eba5ff1cdf3e388378f60213a5bb740ac236",
+    "src/kefir_models/bayesian_observation.py": "f2ec6fbe04782ed84184b11e0842dfe7eb49c92054a31389ea5619c5c58b5490",
+    "src/kefir_models/mcmc.py": "52ba5e7535265ce9612eec83bd7e044a5bf1f1ecae7e556970be5ade363cf27b",
+    "src/kefir_models/posterior_prediction.py": "20c5af70cdf2166c69701234442f15ec627fe4761a8612a89740d78ef8f20bf2"
+  },
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "elapsed_seconds": 24.812533966000046,
+  "time_scale_original": 12,
+  "correlation_parameter": "Matched e-fold time 12/lambda for both kernels"
+}

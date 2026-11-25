@@ -57,10 +57,11 @@ adding the raw variables for $r$ and $K$, while the stochastic logistic PINN
 has $2209+3=2212$ fitted parameters after adding the raw variable for
 $\sigma$.
 
-The carrying capacity is constrained to remain above all observed responses,
-not only above the first row. Define
+As in the classical baseline, the carrying capacity is constrained above the
+largest initial observation. Later noisy observations may exceed the latent
+capacity and do not define its lower bound. Define
 $$
-  K_{\min}=\max_{(i,j)\in\Omega} y_i^{[j]}+10^{-3}.
+  K_{\min}=\max_j y_0^{[j]}+10^{-3}.
 $$
 The deterministic PINN optimizes unconstrained variables $a,b\in\mathbb R$ and
 maps them to physical parameters by

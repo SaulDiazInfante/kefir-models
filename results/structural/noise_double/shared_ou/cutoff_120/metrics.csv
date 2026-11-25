@@ -1,0 +1,3 @@
+kernel,sharing,cutoff,noise_multiplier,full_fit,task,computation_passed,evaluation_count,rmse,coverage,mean_width,marginal_predictive_nll,joint_predictive_nll_per_entry,parameter_log_variance,latent_log_variance,measurement_log_variance,posterior_prediction_draws,interval_score,mean_bias,above_upper,below_lower
+ou,shared,120.0,2.0,False,rollout,True,12,2.1847262720815817,1.0,9.74074278761094,2.2661335395455353,2.3090230572591053,0.001000454279134784,0.0029774755851146805,0.00022224416264674438,12000,9.74074278761094,1.3768888600782099,0,0
+ou,shared,120.0,2.0,False,one_step,True,3,0.8791793337461479,1.0,7.768634854030054,1.7835994726054476,1.9033225407187822,0.000374247623785419,0.002035858989115582,0.00022224416264674432,12000,7.768634854030054,-0.19119108765167425,0,0

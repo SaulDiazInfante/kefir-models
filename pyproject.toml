@@ -44,12 +44,14 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "scipy>=1.10",
     "build>=1.2",
     "pre-commit>=3.0",
     "pytest>=8.0",
     "pytest-cov>=5.0",
     "ruff>=0.5.0",
 ]
+bayes = ["scipy>=1.10"]
 docs = [
     "mkdocs>=1.6",
     "mkdocs-material>=9.5",
@@ -68,6 +70,7 @@ kefir-plot-ode-fit = "kefir_models.plot_ode_fit:main"
 kefir-plot-pinn-fit = "kefir_models.plot_pinn_fit:main"
 kefir-plot-sde-compare = "kefir_models.plot_sde_compare:main"
 kefir-plot-all-models = "kefir_models.plot_all_models:main"
+kefir-report-tables = "kefir_models.report_tables:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }

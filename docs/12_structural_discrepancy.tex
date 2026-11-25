@@ -1,0 +1,104 @@
+\subsection{Shared discrepancy and matched temporal smoothness}
+
+    The preceding forecasts systematically underpredict later observations.
+    We investigate two hypotheses while keeping the logistic median and its
+    parameter priors fixed: a departure common to all trials, and smoother
+    temporal evolution of that departure. This is an exploratory comparison
+    prompted by the observed residuals. It does not supply an untouched test
+    set or establish a physical cause. Allowing model discrepancy also changes
+    what can be learned about the mechanistic parameters
+    \citep{brynjarsdottir2014discrepancy}.
+    Mean-based scores below use the saved finite posterior subsets; their
+    full-posterior moment limitation is established in
+    Section~\ref{sec:predictive-moments}.
+
+    Let \(A_{ik}=a^2 c(|s_i-s_k|)\). The independent model retains one
+    discrepancy process per trial; the shared model instead uses
+    \[
+        \log Y_i^{[j]}=\log m_\theta(s_i)+D(s_i)+\varepsilon_i^{[j]},
+        \qquad \varepsilon_i^{[j]}\overset{\mathrm{iid}}{\sim}\mathcal N(0,b^2).
+    \]
+    Logarithms use the response reference unit defined in the preceding
+    section. Shared discrepancy can represent a common departure from the
+    logistic median. It is a different assumption about trial dependence,
+    rather than an additional source of independent flask variability.
+    In time-major ordering, the two covariance models are
+    \[
+        C_{\rm independent}=A\otimes I_J+b^2 I_{nJ},\qquad
+        C_{\rm shared}=A\otimes\boldsymbol 1_J\boldsymbol 1_J^\top+b^2 I_{nJ},
+        \qquad J=3.
+    \]
+    No model in this comparison contains both shared and trial-specific
+    correlated deviations. Nor do the shared models contain trial random
+    intercepts. Their measurement errors absorb the remaining trial contrasts;
+    these modeling restrictions require experimental justification.
+
+    A two-by-two comparison crosses these dependence assumptions with
+    \[
+        c_{\rm OU}(d)=e^{-\lambda d},\qquad
+        c_{3/2}(d)=(1+\kappa d)e^{-\kappa d},\qquad
+        \kappa=\xi\lambda,
+    \]
+    where \((1+\xi)e^{-\xi}=e^{-1}\), so \(\xi\simeq2.14619\).
+    Both kernels therefore have stationary variance \(a^2\) and e-fold
+    correlation time \(12/\lambda\) in original time units. Using the same
+    prior for \(\lambda\) thus matches this time-scale summary rather than
+    silently changing it when smoothness changes. The Mat\'ern process has
+    an exact two-state linear SDE representation
+    \citep[Example 12.7]{sarkka2019applied}:
+    \[
+        d\begin{pmatrix}D\\V\end{pmatrix}
+        =\begin{pmatrix}0&1\\-\kappa^2&-2\kappa\end{pmatrix}
+         \begin{pmatrix}D\\V\end{pmatrix}ds
+        +\begin{pmatrix}0\\2a\kappa^{3/2}\end{pmatrix}dW,
+        \qquad
+        P_\infty=\operatorname{diag}(a^2,a^2\kappa^2).
+    \]
+    This supplies a velocity state for conditional forecasts. Neither kernel
+    introduces a permanent departure from the logistic asymptote: both have
+    stationary zero-mean discrepancies.
+
+\subsection{Exact inference and forecast scoring}
+
+    The shared likelihood is evaluated through an orthogonal decomposition
+    across trials. The transformed mean \(\sqrt J\,\bar r\) has covariance
+    \(JA+b^2I_n\), and the \(J-1\) orthogonal contrasts have covariance
+    \(b^2I_n\). Gaussian conditioning of the common discrepancy uses the
+    mean residual with covariance \(A+(b^2/J)I_n\). The joint predictive
+    density retains the shared covariance between future trials; multiplying
+    their marginal densities would give an incorrect joint score. Dense
+    Gaussian likelihood and conditioning calculations independently check
+    these reductions. Stationary Lyapunov and matrix-exponential identities
+    check the two kernels against their SDE representations.
+
+    All four models retain the six-coordinate priors and half/double noise
+    sensitivity analysis from the preceding section, with four chains and
+    the same computational acceptance criteria. Earlier validated independent
+    OU samples are reused after checking inference-source and data hashes;
+    recomputed forecasts agree with their saved values. Three new model
+    alternatives are fitted at cutoffs 108, 120, 132, and 168 under all three
+    priors. All four models are also fitted at cutoffs 144 and 156 under the
+    reference prior. This gives 56 posterior cases including 12 reused cases.
+
+    The original multi-time holdouts retain their 36 entries and overlapping
+    targets. An additional one-step comparison trains through
+    \(108,120,132,144,156\) and predicts only the immediately following
+    time. Its 15 scalar responses each appear once, with parameters refitted
+    using the available past. This removes repeated scoring of the same
+    response from that summary, but does not make successive responses or
+    the three trial trajectories independent experiments.
+
+    Alongside coverage, RMSE, signed bias, and marginal and joint negative
+    log predictive density, we report the central 90 percent interval score:
+    \[
+        S_{0.1}(l,u;y)=(u-l)
+        +20(l-y)\boldsymbol 1_{\{y<l\}}
+        +20(y-u)\boldsymbol 1_{\{y>u\}}.
+    \]
+    Smaller scores are preferable. The width term penalizes broad intervals,
+    so nominal coverage alone cannot determine which model forecasts better.
+    Joint density scores account for within-forecast dependence, but their
+    overlapping multi-time summaries remain descriptive.
+
+\input{generated/structural_tables}
+\input{generated/structural_interpretation}

@@ -1,0 +1,4 @@
+cutoff,evaluation_count,mean_observed_minus_predicted,below_lower,above_upper
+108,15,1.27667908637553,0,2
+120,12,1.6641410660522535,0,2
+132,9,2.2461714046649695,0,3

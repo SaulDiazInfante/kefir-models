@@ -1,0 +1,19 @@
+shared matern32 cutoff=168.0 chain=1 acceptance=0.247
+shared matern32 cutoff=168.0 chain=2 acceptance=0.237
+shared matern32 cutoff=168.0 chain=3 acceptance=0.248
+shared matern32 cutoff=168.0 chain=4 acceptance=0.208
+                parameter  rank_split_rhat    bulk_ess    tail_ess
+                  initial         1.003329 2526.847199 1365.977193
+                 capacity         1.002688 1971.580034 1089.789994
+            rate_original         1.002159 3919.204804 4207.134997
+               process_sd         1.002833 1577.774415  871.967075
+           observation_sd         1.000227 4887.254786 7062.298575
+correlation_time_original         1.003084 1801.769744 1084.766814
+             coordinate_0         1.003329 2526.847199 1365.977193
+             coordinate_1         1.002438 3366.424448 2690.987569
+             coordinate_2         1.002164 3919.204804 4207.134997
+             coordinate_3         1.003084 1801.769744 1084.766814
+             coordinate_4         1.002702 1577.774415  871.967075
+             coordinate_5         1.000227 4887.254786 7062.298575
+  kernel sharing  cutoff  noise_multiplier  full_fit    task  computation_passed  evaluation_count     rmse  coverage  mean_width  marginal_predictive_nll  joint_predictive_nll_per_entry  parameter_log_variance  latent_log_variance  measurement_log_variance  posterior_prediction_draws  interval_score  mean_bias  above_upper  below_lower
+matern32  shared   168.0               0.5      True rollout                True                42 0.716997   0.97619    3.156414                 1.061879                        1.055649                0.000012             0.000114                  0.000415                       12000        3.177528  -0.001255            0            1

@@ -1,0 +1,144 @@
+\subsection{Experimental inputs and current status}
+
+    The next scientific step is validation on independently collected
+    experimental units. This step has been prepared, not performed: the
+    checkout contains only the development CSV already used in the preceding
+    investigations. Its time and response units, experimental unit definition,
+    and common experimental conditions remain unconfirmed. Three trial
+    columns cannot by themselves establish three independent experiments.
+    The metadata record retains these unknowns explicitly; inherited figure
+    labels are not used to fill them.
+
+    Table~\ref{tab:prospective-readiness} summarizes the current inputs, and
+    Table~\ref{tab:prospective-design} records the draft comparison. The
+    proposed origins and horizon retain original numerical time units and
+    require confirmation against the experimental schedule. The four model
+    candidates, priors, half/double noise sensitivities, and MCMC gates are
+    retained from the structural comparison. No candidate is selected by
+    the new outcomes, which have not been supplied. The draft is not a
+    completed prospective registration or a new calibration result.
+
+\input{generated/prospective_tables}
+
+\subsection{Separate forecasts from outcome access}
+
+    Before target outcomes are inspected, specify the independent units,
+    collection provenance, measurement units, forecast origins, horizons,
+    candidate models, priors, diagnostics, and scoring rules. A local
+    protocol snapshot copies the specification, experimental metadata, and
+    relevant inference sources, recording hashes and a UTC timestamp. It
+    refuses to overwrite an existing snapshot. This supports change
+    detection; it does not establish external preregistration or prove the
+    time of first outcome access. The snapshot operation does not inspect
+    the new prefix observations, which may not yet exist.
+
+    At each origin, fit each candidate to that unit's available prefix and
+    archive its predictive distribution before inspecting the corresponding
+    target responses. This is a within-trajectory prediction study on new
+    units. It does not transfer a single historical fitted capacity to all
+    experiments or introduce hierarchical pooling. Prefix checks reject
+    future rows, altered earlier observations, and exact copies of
+    development prefixes relabeled as new data. They cannot establish
+    experimental independence without the experimental record.
+
+    An outcome-free forecast interface constructs an equally weighted
+    posterior mixture of joint Gaussian log responses. Component covariance
+    matrices retain the modeled dependence across times and trials, including
+    the difference between shared and independent discrepancies. A separate
+    scoring interface receives the new observed responses and computes
+    central 90 percent observation intervals, interval scores, marginal
+    predictive densities, and the joint mixture density. Density scores
+    retain the response transformation Jacobian. Point errors use the
+    predictive median; parameter integration is retained in the mixture CDF
+    and densities. Gaussian density
+    oracles verify these calculations. The distinction between marginal
+    and joint scores is retained because their earlier model rankings
+    disagreed. Interval and density scores assess predictive quality beyond
+    coverage alone \citep{gneiting2007proper}.
+
+\subsection{Predictive moments and the point forecast}
+\label{sec:predictive-moments}
+
+    Before freezing the draft, a tail check identifies a limitation of the
+    response-scale means used in the preceding finite-subset calculations.
+    Let \(z_b=\log b\) have its declared normal prior and let \(N\) be the
+    number of training scalar responses. Keeping other parameters in a
+    compact interior set, as \(z_b\to\infty\),
+    \[
+        \log L(z_b)=-N z_b+O(1),\qquad
+        \log\mathbb E[Y_*\mid z_b,\theta,D]
+        =\tfrac12 e^{2z_b}+O(1).
+    \]
+    The first identity follows from the observation covariance
+    \(b^2I+O(1)\); the second follows from the conditional lognormal
+    distribution, whose measurement variance is \(b^2\). Thus the
+    unnormalized first-moment integrand has log asymptotic
+    \[
+        \tfrac12 e^{2z_b}
+        -\frac{(z_b-\mu_b)^2}{2d_b^2}
+        -N z_b+O(1)\longrightarrow+\infty.
+    \]
+    The bound holds on a positive-volume compact set of the other parameters,
+    so integration over their joint posterior also gives
+    \(\mathbb E[Y_*\mid D]=\infty\). Increasing the number of observations
+    only changes the linear term. The likelihood tail cannot overcome this
+    double-exponential term under the declared lognormal prior for \(b\).
+    This applies to both sharing assumptions and both temporal kernels.
+    The posterior itself is proper: the observation likelihood is bounded
+    above by a data-dependent constant times \(b^{-N}\), whose prior
+    expectation is finite for lognormal \(b\). Its positive normalizing
+    constant is therefore finite. Existence of this distribution and
+    existence of its response moments are separate requirements.
+
+    Finite posterior-subset means are finite numerical forecast summaries;
+    their apparent stability does not establish a finite full-posterior
+    response mean. The earlier mean-based RMSE and bias numbers are retained
+    with that qualification. Central predictive quantiles and predictive
+    densities remain well-defined functionals of the proper distribution.
+    The prospective API consequently uses the posterior predictive median
+    for point errors, not the population logistic median \(m_\theta\).
+    Its RMSE is a descriptive error of this specified median forecast, not
+    a claim of finite posterior quadratic risk. A physically justified prior
+    redesign would be necessary if finite response means were required.
+    No upper noise bound is invented while physical units are unknown.
+    Section~\ref{sec:tempered-noise} investigates a separate smooth
+    prior modification; the prospective draft itself is not changed.
+
+    A reproducible log-scale tail check in
+    \path{results/prospective/predictive_moment_tail.csv} verifies the
+    \(-N z_b\) likelihood asymptotic numerically. It supports the independent
+    analytic argument; a finite grid alone cannot prove divergence.
+
+\subsection{Independent units determine comparison weights}
+
+    Let \(G\) be the number of independently collected units and
+    \(\mathcal I_{g,h}\) the target responses for unit \(g\) at horizon \(h\).
+    For a pointwise loss \(L\), the proposed summary is
+    \[
+        \bar L_{m,h}
+        =\frac{1}{G}\sum_{g=1}^{G}
+            \frac{1}{|\mathcal I_{g,h}|}
+            \sum_{i\in\mathcal I_{g,h}}L_{m,g,h,i}.
+    \]
+    Thus a unit with more repeated measurements does not receive greater
+    weight in the across-unit comparison. Coverage uses indicator losses;
+    RMSE is the square root of the resulting mean squared-error summary,
+    rather than an average of unit RMSEs. Model comparisons require identical
+    unit and target identities at each horizon. Joint NLL is retained per
+    forecast block and summarized within and across units separately; it is
+    not reconstructed from marginal scores.
+
+    Report each unit and horizon before aggregating. Paired model differences
+    retain the same unit and forecast targets. Any future resampling-based
+    uncertainty assessment must preserve entire independent units and model
+    pairings. Treating longitudinal response rows as independent experiments
+    would change the sampling unit. The present utilities do not generate
+    calibration confidence intervals or assert statistical significance.
+
+    The readiness checker, protocol snapshot, forecast-moment, and scoring
+    APIs are implemented and tested. A complete automated new-data fitting
+    and forecast-archiving runner is not yet supplied. Synthetic fixtures
+    establish computational identities, not new kefir validation. Confirmed
+    experimental metadata, additional independent trajectories, and a
+    documented new-data run remain necessary. REV-07 and REV-10 therefore
+    remain scientifically open.

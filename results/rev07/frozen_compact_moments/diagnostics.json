@@ -1,0 +1,15 @@
+{
+  "checkpoint": "results/rev07/cutoff_168/compact_moments.pt",
+  "drift_derivative_times_gap_quantiles": [
+    -1.1026136875152588,
+    -1.07190603017807,
+    -0.999883621931076,
+    -0.29995060712099075,
+    -0.003473161021247506
+  ],
+  "negative_drift_euler_unstable_count": 0,
+  "transition_count": 42,
+  "checkpoint_sha256": "ce05cd1e83d33cf17c591466f4e0e32e29b1131554b6207f364cdc1339e76b7c",
+  "torch_version": "2.7.1+cu126",
+  "note": "Local frozen linearization, not a global nonlinear stability theorem; MC NLL is a Gaussian moment proxy."
+}

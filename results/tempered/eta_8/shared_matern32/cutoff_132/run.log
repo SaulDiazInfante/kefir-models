@@ -1,0 +1,26 @@
+shared matern32 eta=8.0 cutoff=132.0 chain=1 acceptance=0.217
+shared matern32 eta=8.0 cutoff=132.0 chain=2 acceptance=0.237
+shared matern32 eta=8.0 cutoff=132.0 chain=3 acceptance=0.247
+shared matern32 eta=8.0 cutoff=132.0 chain=4 acceptance=0.233
+                      parameter  rank_split_rhat    bulk_ess    tail_ess
+                        initial         1.000893 3356.635366 3511.658174
+                       capacity         1.002424 2419.266532 2080.156971
+                  rate_original         1.000795 2946.811561 2303.409996
+                     process_sd         1.001097 2028.215473 1863.636282
+                 observation_sd         1.000636 4591.256039 6877.941422
+      correlation_time_original         1.001116 2469.461011 2267.063649
+                   coordinate_0         1.000893 3356.635366 3511.658174
+                   coordinate_1         1.002166 2507.081341 2379.114525
+                   coordinate_2         1.000795 2946.811561 2303.409996
+                   coordinate_3         1.001369 2469.461011 2267.063649
+                   coordinate_4         1.001097 2028.215473 1863.636282
+                   coordinate_5         1.000659 4591.256039 6877.941422
+predictive_mean_time_12_trial_1         1.001721 3591.966679 4376.180181
+predictive_mean_time_12_trial_2         1.001721 3591.966679 4376.180181
+predictive_mean_time_12_trial_3         1.001721 3591.966679 4376.180181
+predictive_mean_time_14_trial_1         1.001999 2604.409951 2297.886688
+predictive_mean_time_14_trial_2         1.001999 2604.409951 2297.886688
+predictive_mean_time_14_trial_3         1.001999 2604.409951 2297.886688
+  kernel sharing  eta  cutoff     task  computation_passed  coverage  mean_width  interval_score  marginal_predictive_nll  evaluation_count  rmse_mean  rmse_median  bias_mean  bias_median  joint_predictive_nll_per_entry  above_upper  below_lower
+matern32  shared  8.0   132.0  rollout                True  0.888889    7.525620        9.454430                 2.487985                 9    2.66029     2.730146   2.129031     2.207009                        2.505969            1            0
+matern32  shared  8.0   132.0 one_step                True  1.000000    6.776843        6.776843                 2.049287                 3    1.78582     1.815750   1.032762     1.083693                        2.963640            0            0

@@ -1,0 +1,133 @@
+\label{sec:tempered-noise}
+\subsection{A normalized prior with controlled moments}
+
+    REV-11 establishes that the original lognormal noise-SD priors give
+    infinite response-scale predictive means. We now construct a separate
+    exploratory prior family that controls the required moments while
+    preserving unbounded positive support. Integrability of quantities of
+    interest is part of specifying a Bayesian inverse problem
+    \citep{stuart2010inverse}; the following bound is derived here for these
+    observation models. The original priors, saved fits, and prospective
+    draft are retained as separate records.
+
+    For each noise SD \(v\in\{a,b\}\), put \(z_v=\log v\) and define
+    \[
+        p_\eta(z_v)
+        =\frac{1}{Z_\eta}
+            \frac{\exp[-(z_v-\mu_\eta)^2/2]}{\sqrt{2\pi}}
+            \exp[-\eta e^{2z_v}],\qquad \eta>0,
+    \]
+    with
+    \[
+        Z_\eta
+        =\mathbb E_{Z\sim\mathcal N(\mu_\eta,1)}
+            [\exp(-\eta e^{2Z})].
+    \]
+    The SD density includes the usual \(1/v\) transformation factor; the
+    posterior is sampled in \(z_v\), where no extra Jacobian is needed.
+    Both latent and measurement SDs receive this prior independently.
+    Controlling only measurement noise would leave the latent amplitude
+    without the exponential-square integrability used below.
+
+    The Gaussian kernel location \(\mu_\eta\) is calibrated so that
+    \(\Pr_\eta(v\le0.03)=1/2\). Its kernel scale remains one. Neither
+    location nor scale is a moment of the non-Gaussian tempered log-SD
+    prior. One-dimensional quadrature computes the normalizer and CDF;
+    a scalar root solve matches the median. Independent integration in the
+    SD coordinate verifies normalization and the change of variables.
+    Matching medians does not match the whole prior: the upper quantiles
+    and central shape change, as reported in Table~\ref{tab:tempered-priors}.
+    These are declared analyst choices on dimensionless log-response SDs,
+    not elicited experimental information or estimates of physical bounds.
+
+\subsection{Global posterior moment bound}
+
+    Let \(N\) be the number of training scalar responses and \(D\) the
+    observed data. Conditional on the latent process, the measurement
+    likelihood obeys
+    \[
+        L(D\mid\theta,U)\le C_D b^{-N},
+    \]
+    where \(C_D\) is finite for the positive observed responses. For a new
+    observation and any \(q\ge0\), the logistic median obeys
+    \(m_\theta(s_*)\le K\), and the stationary Gaussian discrepancy and new
+    measurement error give
+    \[
+        \mathbb E[Y_*^q\mid\theta]
+        =m_\theta(s_*)^q
+            \exp\!\left[\frac{q^2}{2}(a^2+b^2)\right].
+    \]
+    Let \(G_\eta\) denote the product of the Gaussian kernel priors before
+    the noise penalties, and let \(Z_D>0\) be the data normalizer under the
+    new prior. Using nonnegative integrands and the likelihood bound before
+    integrating the latent process gives
+    \begin{align*}
+        \mathbb E_\eta[Y_*^q\mid D]
+        &\le\frac{C_D}{Z_D Z_\eta^2}
+            \mathbb E_{G_\eta}\!\left[
+                K^q b^{-N}
+                e^{(q^2/2-\eta)(a^2+b^2)}
+            \right]\\
+        &\le\frac{C_D}{Z_D Z_\eta^2}
+            \mathbb E_{G_\eta}[K^q b^{-N}]<\infty,
+            \qquad \eta\ge q^2/2.
+    \end{align*}
+    The last expectation is finite because the logistic capacity has all
+    positive moments under its Gaussian log-coordinate priors and the
+    lognormal measurement SD has all negative power moments. The same
+    likelihood bound makes \(Z_D\) finite and positive. This argument applies
+    to both temporal kernels and both sharing assumptions. It avoids any
+    unproved uniform bound on conditional Gaussian interpolation weights.
+
+    The boundary is included. Conversely, when \(q^2/2>\eta\), the
+    large-\(b\) first-moment argument from the preceding section becomes
+    a \(q\)-moment integrand with log asymptotic
+    \[
+        (q^2/2-\eta)e^{2z_b}
+        -\frac{(z_b-\mu_\eta)^2}{2}-Nz_b+O(1),
+    \]
+    which diverges on a positive-volume compact set of the other parameters.
+    Thus positive response moments exist exactly through order
+    \(\sqrt{2\eta}\), inclusive. The main choice \(\eta=2\) gives a finite
+    mean and variance; the fixed sensitivity choice \(\eta=8\) additionally
+    gives a finite fourth moment. Neither choice makes every response moment
+    finite. The exponential-square prior moment identity
+    \[
+        \mathbb E_\eta[e^{t v^2}]
+        =\frac{Z_{\eta-t}(\mu_\eta)}{Z_\eta(\mu_\eta)},
+        \qquad t\le\eta,
+    \]
+    supplies an independent numerical check, including \(t=\eta\), where
+    \(Z_0=1\). The location in the numerator stays \(\mu_\eta\); it is not
+    recalibrated for \(\eta-t\).
+
+\subsection{Fixed comparison and computational checks}
+
+    All four discrepancy models are refitted at cutoffs 108, 120, 132, 144,
+    156, and 168 for \(\eta=2\), and at 108, 120, 132, and 168 for
+    \(\eta=8\): 40 cases. Tail strengths are fixed by the moment requirements,
+    not selected by coverage. Other parameter priors and likelihoods are
+    unchanged. No historical posterior archive is reused under the new prior.
+    Four chains retain the existing warmup-only adaptation and numerical
+    acceptance gates; lengths extend only when computation checks fail.
+
+    In addition to coordinates and physical parameters, diagnostics monitor
+    the conditional response-mean integrands at the first and last forecast
+    times. These checks use every eighth retained draw, with raw ESS and an
+    estimated MCSE alongside rank/folded split \(\widehat R\), bulk ESS,
+    and tail ESS. Raw mean ESS must also be at least 400. Finite second
+    response moments imply a finite variance of the conditional-mean
+    integrand by Jensen's inequality. A Markov-chain central limit theorem
+    still needs mixing assumptions; existence of the moment alone does not
+    prove it. Reported MCSEs are estimates, not rigorous tail-error bounds.
+
+    The main-prior one-step comparison retains 15 distinct scalar targets
+    across the five origins. The multi-time comparison retains 36 overlapping
+    entries across the first three origins. These are the same previously
+    analyzed trial trajectories, not new independent experiments. Full-data
+    cases report parameter summaries and a hypothetical next-time forecast
+    without observed target scores. Noise-prior normalizers, sources, seeds,
+    package versions, numerical settings, and data hashes are recorded per case.
+
+\input{generated/tempered_tables}
+\input{generated/tempered_interpretation}

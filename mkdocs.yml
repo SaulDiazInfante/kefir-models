@@ -53,6 +53,11 @@ nav:
   - Usage: usage.md
   - Models: models.md
   - Results: results.md
+  - Calibration investigation: rev07-calibration.md
+  - Bayesian observation model: bayesian-observation.md
+  - Structural discrepancy: structural-discrepancy.md
+  - Independent-unit validation: prospective-validation.md
+  - Finite predictive moments: tempered-noise.md
   - API Reference: api.md
   - Report: report.md
   - Changelog: changelog.md

@@ -12,6 +12,7 @@
     "transition_weight": 0.1,
     "initial_diffusion": 0.02,
     "sde_paths": 5000,
+    "sde_max_step": 0.05,
     "interval_level": 0.9,
     "plot_points": 300,
     "seed": 7,

@@ -1,0 +1,23 @@
+shared matern32 eta=2.0 cutoff=156.0 chain=1 acceptance=0.226
+shared matern32 eta=2.0 cutoff=156.0 chain=2 acceptance=0.240
+shared matern32 eta=2.0 cutoff=156.0 chain=3 acceptance=0.230
+shared matern32 eta=2.0 cutoff=156.0 chain=4 acceptance=0.168
+                      parameter  rank_split_rhat    bulk_ess    tail_ess
+                        initial         1.001212 3265.406673 3701.043828
+                       capacity         1.000991 3464.991717 2441.506516
+                  rate_original         1.000381 3817.809119 3622.426539
+                     process_sd         1.001865 2544.291833 2897.269333
+                 observation_sd         1.001323 4142.554215 6548.706462
+      correlation_time_original         1.003300 2649.201265 3510.673646
+                   coordinate_0         1.001212 3265.406673 3701.043828
+                   coordinate_1         1.001312 3680.610550 4074.076114
+                   coordinate_2         1.000372 3817.809119 3622.426539
+                   coordinate_3         1.003300 2649.201265 3510.673646
+                   coordinate_4         1.001865 2544.291833 2897.269333
+                   coordinate_5         1.001323 4142.554215 6548.706462
+predictive_mean_time_14_trial_1         1.000406 3108.067052 2441.425171
+predictive_mean_time_14_trial_2         1.000406 3108.067052 2441.425171
+predictive_mean_time_14_trial_3         1.000406 3108.067052 2441.425171
+  kernel sharing  eta  cutoff     task  computation_passed  coverage  mean_width  interval_score  marginal_predictive_nll  evaluation_count  rmse_mean  rmse_median  bias_mean  bias_median  joint_predictive_nll_per_entry  above_upper  below_lower
+matern32  shared  2.0   156.0  rollout                True  0.666667    6.796623       10.348704                 2.527963                 3   2.655992      2.71785   2.373356     2.442383                        2.350985            1            0
+matern32  shared  2.0   156.0 one_step                True  0.666667    6.796623       10.348704                 2.527963                 3   2.655992      2.71785   2.373356     2.442383                        2.350985            1            0

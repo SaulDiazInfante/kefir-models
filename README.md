@@ -92,7 +92,46 @@ step-by-step sequences) are in `results/`.
 
 ## Report
 
+Reproduce the fitted results, generated tables, and curated report figures with:
+
+```bash
+python scripts/reproduce_report.py
+```
+
+This reference run uses CPU computation and one thread. Effective settings,
+package versions, data and source hashes, and integration diagnostics are
+saved alongside the results. Simulations use fixed internal integration steps
+independent of plotting resolution. The stochastic equations use the Itô
+convention, and the bands condition on point estimates of the parameters.
+
 The LaTeX report is modular, with `docs/00_main.tex` as the root document.
+The controlled calibration investigation and Bayesian observation-model
+extension are reproduced separately:
+
+```bash
+pip install -e ".[bayes]"
+python scripts/run_rev07.py
+python scripts/run_bayesian_iteration.py
+python scripts/run_structural_iteration.py
+```
+
+The Bayesian models use proper declared priors, exact latent OU covariance
+likelihoods, four-chain MCMC diagnostics, posterior predictive intervals, and
+noise-prior sensitivity checks. These are exploratory extensions; predictive
+calibration must be assessed independently of computational convergence.
+The structural extension compares shared/independent discrepancy and matched
+OU/Matérn kernels, including distinct one-step targets and predictive scores.
+See [the investigation notes](docs/structural-discrepancy.md) for assumptions,
+provenance, limitations, and the next validation step.
+The [independent-unit validation protocol](docs/prospective-validation.md)
+is prepared as a draft; confirmed experimental metadata and additional
+trajectories are still required.
+The predictive-moment audit identifies an infinite full response-scale mean
+under the unbounded noise-SD priors; new point forecasts use predictive medians.
+A separate [tempered-prior comparison](docs/tempered-noise.md) supplies finite
+predictive means and variances through smooth tail control, with median-matched
+priors and 40 refits. Reproduce it with `python scripts/run_tempered_iteration.py`.
+
 Build the PDF with:
 
 ```bash
@@ -110,9 +149,10 @@ python -m build         # build sdist + wheel
 pre-commit install      # enable git hooks (optional)
 ```
 
-Tests are fast and deterministic: they use synthetic toy data, fixed seeds, the
-non-interactive matplotlib `Agg` backend, and never run full neural-network
-training.
+Tests use synthetic toy data, fixed seeds, the non-interactive matplotlib
+`Agg` backend, analytic limiting cases, and small numerical convergence checks.
+They never run full neural-network training. Reference experiments and
+step-refinement checks are separate from the unit suite.
 
 ## License
 

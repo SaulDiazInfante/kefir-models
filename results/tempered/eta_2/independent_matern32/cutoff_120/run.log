@@ -1,0 +1,26 @@
+independent matern32 eta=2.0 cutoff=120.0 chain=1 acceptance=0.227
+independent matern32 eta=2.0 cutoff=120.0 chain=2 acceptance=0.217
+independent matern32 eta=2.0 cutoff=120.0 chain=3 acceptance=0.249
+independent matern32 eta=2.0 cutoff=120.0 chain=4 acceptance=0.220
+                      parameter  rank_split_rhat    bulk_ess    tail_ess
+                        initial         1.001366 3532.218894 5526.040338
+                       capacity         1.000761 3464.117421 4792.367850
+                  rate_original         1.000541 3760.215780 5466.073337
+                     process_sd         1.001997 2048.273585 3048.071930
+                 observation_sd         1.001348 1715.067795  899.002757
+      correlation_time_original         1.001380 2974.948339 4208.595756
+                   coordinate_0         1.001366 3532.218894 5526.040338
+                   coordinate_1         1.001581 3338.220218 4970.803222
+                   coordinate_2         1.000541 3760.215780 5466.073337
+                   coordinate_3         1.001370 2974.948339 4208.595756
+                   coordinate_4         1.001997 2048.273585 3048.071930
+                   coordinate_5         1.001348 1715.067795  899.002757
+predictive_mean_time_11_trial_1         1.000557 3852.778798 6349.995415
+predictive_mean_time_11_trial_2         1.000616 3906.302138 6239.726441
+predictive_mean_time_11_trial_3         1.000614 3833.352917 6127.280926
+predictive_mean_time_14_trial_1         1.000591 3634.723044 5431.687653
+predictive_mean_time_14_trial_2         1.000602 3659.133045 5427.394881
+predictive_mean_time_14_trial_3         1.000597 3635.571017 5118.186748
+  kernel     sharing  eta  cutoff     task  computation_passed  coverage  mean_width  interval_score  marginal_predictive_nll  evaluation_count  rmse_mean  rmse_median  bias_mean  bias_median  joint_predictive_nll_per_entry  above_upper  below_lower
+matern32 independent  2.0   120.0  rollout                True  0.833333     5.75407        10.12532                 2.409159                12   2.424742     2.449881   1.664755     1.699782                        2.196081            2            0
+matern32 independent  2.0   120.0 one_step                True  1.000000     5.64682         5.64682                 1.565941                 3   0.834302     0.833707  -0.048612    -0.016401                        1.565943            0            0

@@ -1,0 +1,2 @@
+kernel,sharing,cutoff,noise_multiplier,full_fit,task,computation_passed,evaluation_count,rmse,coverage,mean_width,marginal_predictive_nll,joint_predictive_nll_per_entry,parameter_log_variance,latent_log_variance,measurement_log_variance,posterior_prediction_draws,interval_score,mean_bias,above_upper,below_lower
+matern32,independent,168.0,0.5,True,rollout,True,42,0.8346850783512093,1.0,4.54818792602709,0.8414801015685278,-2.8932460182868813,0.0001851695424356926,0.00015833294666716164,0.0007905834643157796,12000,4.54818792602709,-0.008472134383367464,0,0

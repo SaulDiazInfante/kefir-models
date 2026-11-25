@@ -1,0 +1,35 @@
+{
+  "original_pdf_preserved_sha256": "3901e680e07321dfc1ff6b0f5935d7d9142489fbd7ee5304e2b9bb3378da6e09",
+  "review_pdf": "outputs/review_2026-11-25/report-updated-bayesian.pdf",
+  "source_sha256": {
+    "docs/00_main.tex": "6ad000153ab3aa8545a5cfddddf8f70b92cd56afc80ea898f003a45347bf18b2",
+    "docs/setup.tex": "d36f6105d7b0283d8459a6a30c8235945aeb08e22fc1b633f8d677ff52b4b929",
+    "docs/10_calibration_investigation.tex": "77e7ad14547276ff68f60b406882a2eba789d9f0acc191703667e99ceb7502e1",
+    "docs/11_bayesian_observation.tex": "8e1a9936ab332a601395e59dd14a55be2ce50503d00044fc12cc9b54a7a995f2",
+    "scripts/run_bayesian_iteration.py": "d6c4ea6bf86221901e0a321e034ba5853219f7122398074402a58f74b65bbcc4",
+    "scripts/summarize_bayesian_observation.py": "66258f654363ad14bfcb4c3e170f05b40ae801d62a670cca6fd395d6ed708c17",
+    "scripts/build_iteration_tables.py": "fe23cbbc3b2c81c2cee6dd813d947aa3847fd0516b8ff818861f9a1674d2034b",
+    "src/kefir_models/report_tables.py": "d696ed0115d17b8f00a63ce0bb0eb324001d6d7c7f39fb885b3c0f6e47ce5674"
+  },
+  "artifact_sha256": {
+    "docs/generated/fit_values.tex": "94da224c781d0dbec82da3214e6a388664f345217fbeca384f1aa519a7109a15",
+    "docs/generated/bayesian_tables.tex": "a721b872b35e6d59afdbd8da89d8494435e7057c7c6791c518c293f8cb7a3135",
+    "docs/generated/model_comparison_tables.tex": "89fd125c5992913cdb3db41ab9c5a902426403cdb401470736e97ea8dfe3a795",
+    "docs/generated/rev07_tables.tex": "fc30a6e2b0517aaf91ce893572f112e365869a3ac56bd4d3438d822f16da85c1",
+    "docs/generated/bayesian_interpretation.tex": "64b83c12267282dff0f06dbc9df0f1506a4f4051a7f1c72f7323d90ba6152023",
+    "results/bayesian/all_metrics.csv": "13d7c87c3d5012c5d797b17b53b391a8a0e53090eec32d63df6ebf9c3b940f5b",
+    "results/bayesian/holdout_summary.csv": "3ca6e42e2dca78951ebc3050df7b5ea9a37fa5d3c6f38ae05129e1f488e07cbb",
+    "results/bayesian/predictive_integration_refinement.csv": "3562722c8a540dab9c78c5445b37e88a974c8e0e1ce101da846ee18ad4a6af30",
+    "results/bayesian/forecast_bias.csv": "145f602a0f7b8b75113fb5c1849032a5b78fe9c708bd8359792c85c7f8f45e9b",
+    "results/bayesian/computation_checks.csv": "d1639a7fcfd8ff86ccc223f9c0442b1e4b29f77c4aa08b601acfd11785ea6356",
+    "results/bayesian/fixed_parameter_comparison.csv": "e53c46e15eddfdb9175536ce2b5baaa3d49a75b76002e20752b663003b158825",
+    "results/bayesian/prior_predictive.csv": "494931f7a99e6077a7ebd5f0794d22b9457f3e7ba1617867a4be7ebd4f174dd2",
+    "results/bayesian/forecast_comparison.png": "17d27573d7a3b70abd0d71bb27a1590c8826b81aad3d41cf64696bdab35b00dd",
+    "results/bayesian/posterior_trace.png": "a3a639b5841ec04a3a386179c21d1f4f43b32b3bd778a9080fff98abc281de6a",
+    "results/bayesian/noise_identifiability.png": "9811c6ffdc31a7e970d2dcd13c97960f3ec7edd7207e3f403ecc7e53626f09e6",
+    "outputs/review_2026-11-25/report-updated-bayesian.pdf": "355bc21e57a21e1dafaa9cea4bb1d114623be00b46f1627977c39ef11b5d4517"
+  },
+  "validated_bayesian_cases": 16,
+  "unit_tests_passed": 77,
+  "report_pages": 25
+}

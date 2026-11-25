@@ -1,13 +1,13 @@
 
-The stochastic neural model is an stratonovich diffusion with neural drift and
-diffusioncoefficients, following the Neural SDE modeling idea
+The stochastic neural model is an It\^o diffusion with neural drift and
+diffusion coefficients, following the Neural SDE modeling idea
 \citep{tzen2019neuralsde,kidger2021neuralsdegan}:
 $$
   dZ_\tau
   =
   \mu_\theta(\tau,Z_\tau)\,d\tau
   +
-  \sigma_\phi(\tau,Z_\tau)\, \circ dW_\tau.
+  \sigma_\phi(\tau,Z_\tau)\,dW_\tau.
 $$
 Both the drift $\mu_\theta$ and the raw diffusion network use the same
 architecture as the Neural ODE: two hidden layers, 32 units per hidden layer,
@@ -56,4 +56,9 @@ where $\Omega_{\mathrm{tr}}$ is the set of adjacent observed transitions.
 Training used Adam for 1000 epochs with learning rate $5\times10^{-3}$ and
 weight decay $10^{-4}$ \citep{kingma2015adam}. After training, 1000 Monte Carlo
 paths were simulated to estimate predictive means and central 90 percent
-intervals.
+intervals. Forward simulation uses a maximum normalized-time step of 0.001
+on a fixed internal grid, independently of requested output times.
+The It\^o convention is retained from the implemented model. The earlier
+Stratonovich notation was inconsistent with that implementation. The
+transition likelihood remains a one-observation-step approximation; refining
+the simulation does not remove bias in that training approximation.

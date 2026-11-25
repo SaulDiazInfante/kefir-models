@@ -1,0 +1,2 @@
+kind,cutoff,full_fit,noise_multiplier,prediction_seed,evaluation_count,computation_passed,rmse,coverage,mean_width,marginal_predictive_nll,joint_predictive_nll_per_entry,parameter_log_variance,latent_log_variance,measurement_log_variance,posterior_prediction_draws
+ou,108.0,False,2.0,0,15,True,2.1425598119360383,0.9333333333333333,6.395634333310894,2.174527020586465,2.0535779026050616,0.00020910773129377967,0.0006024818212941559,0.0009283149199543361,12000

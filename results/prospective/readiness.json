@@ -1,0 +1,21 @@
+{
+  "status": "awaiting_experimental_metadata",
+  "protocol_ready_to_freeze": false,
+  "missing": [
+    "reference_metadata.time_unit",
+    "reference_metadata.response_name",
+    "reference_metadata.response_unit",
+    "reference_metadata.experimental_unit_definition",
+    "reference_metadata.trial_to_experimental_unit",
+    "reference_metadata.shared_conditions",
+    "reference_metadata.confirmation_source",
+    "independence_confirmed_by",
+    "validation_units"
+  ],
+  "missing_prefix_inputs": [],
+  "prefix_inputs_inspected": true,
+  "development_sha256": "a9ca1a50f665305619db1a06be43a1dc31f16c0293499cdcc01eaf75f6261acd",
+  "validated_prefixes": [],
+  "plan_sha256": "86f520fbbf03e03e0e30e6254034f749bbd5bae40b036cf916eac225168ee8d8",
+  "experimental_independence": "requires documentary evidence; not established by file hashes"
+}

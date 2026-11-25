@@ -1,0 +1,16 @@
+                parameter  rank_split_rhat    bulk_ess    tail_ess
+                  initial         1.001212 3347.116048 2898.867078
+                 capacity         1.000732 3165.015831 3139.654281
+            rate_original         1.000715 3788.479932 4005.148097
+               process_sd         1.001129 2343.328242 3082.836178
+           observation_sd         1.000815 4543.191226 6824.532968
+correlation_time_original         1.001948 2629.993801 4014.747230
+             coordinate_0         1.001212 3347.116048 2898.867078
+             coordinate_1         1.000606 3729.867177 3860.976204
+             coordinate_2         1.000715 3788.479932 4005.148097
+             coordinate_3         1.001948 2629.993801 4014.747230
+             coordinate_4         1.001243 2343.328242 3082.836178
+             coordinate_5         1.000855 4543.191226 6824.532968
+kernel sharing  cutoff  noise_multiplier  full_fit     task  computation_passed  evaluation_count     rmse  coverage  mean_width  marginal_predictive_nll  joint_predictive_nll_per_entry  parameter_log_variance  latent_log_variance  measurement_log_variance  posterior_prediction_draws  interval_score  mean_bias  above_upper  below_lower
+    ou  shared   108.0               1.0     False  rollout                True                15 1.883640       1.0   10.188588                 2.194283                        2.118038                0.001366             0.002989                  0.000226                       12000       10.188588   0.915245            0            0
+    ou  shared   108.0               1.0     False one_step                True                 3 0.463757       1.0    7.933892                 1.729956                        1.253547                0.000475             0.002057                  0.000226                       12000        7.933892  -0.270510            0            0

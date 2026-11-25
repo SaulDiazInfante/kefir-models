@@ -1,0 +1,8 @@
+{
+  "script_sha256": "8ae0b232033a1c2dd590f0eb83891c131a422020f1522f101a3b8b6bbe5ea688",
+  "historical_summary_sha256": "212f3747dacd0c556ffdf12f4982a212ece6e1ab48be7d20d726b7b2a7f68e67",
+  "data_sha256": "230236e3be3eee57ca1821a65a3bb50cb09d28d097ce5aea9746cc901fc3a1b1",
+  "cases": 40,
+  "new_independent_units": 0,
+  "prior_selection": "Two fixed strengths; no optimization against forecast coverage."
+}

@@ -1,0 +1,23 @@
+shared matern32 eta=8.0 cutoff=168.0 chain=1 acceptance=0.226
+shared matern32 eta=8.0 cutoff=168.0 chain=2 acceptance=0.250
+shared matern32 eta=8.0 cutoff=168.0 chain=3 acceptance=0.242
+shared matern32 eta=8.0 cutoff=168.0 chain=4 acceptance=0.216
+                      parameter  rank_split_rhat    bulk_ess    tail_ess
+                        initial         1.002045 3582.833201 2996.713665
+                       capacity         1.002573 2763.765641 1835.334554
+                  rate_original         1.001116 3911.522586 4324.915474
+                     process_sd         1.001852 2335.373793 1985.914750
+                 observation_sd         1.000620 4699.524288 6954.514612
+      correlation_time_original         1.003372 2364.881848 2887.304115
+                   coordinate_0         1.002032 3582.833201 2996.713665
+                   coordinate_1         1.001072 3507.843097 3337.284345
+                   coordinate_2         1.001153 3911.522586 4324.915474
+                   coordinate_3         1.003372 2364.881848 2887.304115
+                   coordinate_4         1.001852 2335.373793 1985.914750
+                   coordinate_5         1.000620 4699.524288 6954.514612
+predictive_mean_time_15_trial_1         1.001987 2566.385799 1764.318040
+predictive_mean_time_15_trial_2         1.001987 2566.385799 1764.318040
+predictive_mean_time_15_trial_3         1.001987 2566.385799 1764.318040
+Empty DataFrame
+Columns: []
+Index: []

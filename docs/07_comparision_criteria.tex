@@ -69,7 +69,7 @@ common variance $\sigma^2$. The maximum likelihood variance estimate is
 $$
   \widehat\sigma^2 = \frac{\mathrm{SSE}}{n},
 $$
-which gives the maximized log-likelihood
+which gives the residual log-likelihood maximized over the variance only
 $$
   \log \widehat L
   =
@@ -89,9 +89,10 @@ additional parameter is the residual variance. Thus $k=3$ for the classical
 logistic model, $k=1186$ for the Neural ODE, $k=2371$ for the Neural SDE,
 $k=2212$ for the deterministic logistic PINN, and $k=2213$ for the stochastic
 logistic PINN/SDE.
-Initial conditions are not counted as fitted parameters because they are taken
-directly from the first row of the data; for the single-curve Neural ODE this
-means using $y_0=J^{-1}\sum_{j=1}^J y_0^{[j]}$.
+For the classical ODE and simulated SDEs, initial conditions are fixed at
+first-row observations. The Neural ODE uses their mean. The PINN initial
+output is learned through the counted network weights and a soft initial
+loss; there is no additional free initial-condition parameter.
 
 The 90 percent interval coverage is computed for models that produce a
 predictive distribution rather than only a fitted mean curve: the Neural SDE
@@ -116,10 +117,16 @@ $$
 $$
 Thus an observed data point is counted as covered if it lies between the 5
 percent and 95 percent Monte Carlo quantiles for the same time and trial. For
-the Neural SDE, the reported value $0.9333$ means that 42 of the 45 observed
+the Neural SDE, the reported value $\neuralCoverage$ means that \neuralCovered\ of the \observationCount\ observed
 responses fall inside their corresponding central 90 percent intervals. For
-the stochastic logistic SDE, the reported value $0.8222$ means that 37 of the
-45 observed responses fall inside their corresponding central 90 percent
+the stochastic logistic SDE, the reported value $\logisticCoverage$ means that \logisticCovered\ of the
+\observationCount\ observed responses fall inside their corresponding central 90 percent
 intervals. The mean interval width is the average of $U_i^{[j]}-L_i^{[j]}$ over
 the same observed entries. These are in-sample empirical calibration
 diagnostics, not out-of-sample guarantees.
+The simulated bands hold estimated coefficients fixed. They quantify process
+noise conditional on the observed initial values, not posterior parameter
+uncertainty or additional measurement noise. The time-respecting holdout
+protocol described above is executed for the controlled candidates in the later
+calibration section; the reference table in this section remains an
+in-sample point-estimate comparison.

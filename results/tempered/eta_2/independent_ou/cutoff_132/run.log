@@ -1,0 +1,26 @@
+independent ou eta=2.0 cutoff=132.0 chain=1 acceptance=0.243
+independent ou eta=2.0 cutoff=132.0 chain=2 acceptance=0.231
+independent ou eta=2.0 cutoff=132.0 chain=3 acceptance=0.232
+independent ou eta=2.0 cutoff=132.0 chain=4 acceptance=0.226
+                      parameter  rank_split_rhat    bulk_ess    tail_ess
+                        initial         1.001200 3867.777345 4743.800709
+                       capacity         1.001485 3464.162715 3303.833559
+                  rate_original         1.000791 4035.842799 4722.798986
+                     process_sd         1.001257 1881.216137 3803.611907
+                 observation_sd         1.001221 1483.615518  726.979823
+      correlation_time_original         1.000934 2668.459774 4418.592489
+                   coordinate_0         1.001190 3867.777345 4743.800709
+                   coordinate_1         1.000843 3952.488569 6506.015557
+                   coordinate_2         1.000834 4035.842799 4722.798986
+                   coordinate_3         1.000934 2668.459774 4418.592489
+                   coordinate_4         1.001257 1881.216137 3803.611907
+                   coordinate_5         1.001204 1483.615518  726.979823
+predictive_mean_time_12_trial_1         1.001054 3697.156624 3520.982211
+predictive_mean_time_12_trial_2         1.000585 4167.941440 6030.648221
+predictive_mean_time_12_trial_3         1.001056 3757.661297 3827.418296
+predictive_mean_time_14_trial_1         1.001065 3588.787658 3360.729495
+predictive_mean_time_14_trial_2         1.000720 3647.346684 3966.378736
+predictive_mean_time_14_trial_3         1.001087 3598.589495 3364.424967
+kernel     sharing  eta  cutoff     task  computation_passed  coverage  mean_width  interval_score  marginal_predictive_nll  evaluation_count  rmse_mean  rmse_median  bias_mean  bias_median  joint_predictive_nll_per_entry  above_upper  below_lower
+    ou independent  2.0   132.0  rollout                True  0.666667    5.509886       12.143107                 2.744635                 9   2.757757     2.785129   2.232699     2.265808                        2.389350            3            0
+    ou independent  2.0   132.0 one_step                True  1.000000    5.435627        5.435627                 2.053712                 3   1.831970     1.850306   1.098956     1.129418                        2.064153            0            0

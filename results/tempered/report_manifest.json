@@ -1,0 +1,63 @@
+{
+  "iteration": "REV-12",
+  "date": "2026-11-25",
+  "validated_refits": 40,
+  "new_independent_units": 0,
+  "prior_family": "Median-matched lognormal SD kernels with exp(-eta*(a^2+b^2)) tempering",
+  "tail_strengths": [
+    2,
+    8
+  ],
+  "positive_response_moments_finite_through_inclusive": {
+    "eta_2": 2,
+    "eta_8": 4
+  },
+  "original_priors_preserved": true,
+  "prospective_draft_preserved": true,
+  "tests_passed": 118,
+  "ruff_lint": "passed",
+  "ruff_format_files": 60,
+  "mkdocs_strict": "passed",
+  "latex_warnings": 0,
+  "pdf_pages": 40,
+  "visual_review": "All 40 final pages rendered at 90 DPI and inspected as contact sheets; new section pages 33-37 additionally inspected individually. No clipping or overlap.",
+  "max_rhat": 1.0058612460147238,
+  "min_bulk_ess": 928.8302021197364,
+  "min_tail_ess": 423.3564349605583,
+  "min_predictive_mean_raw_ess": 948.1544082308104,
+  "max_estimated_mean_mcse": 0.0716820860794566,
+  "output_pdf": "/home/saul/projects/kefir-models/outputs/review_2026-11-25/report-tempered-noise.pdf",
+  "output_pdf_sha256": "2181bb99453e599928cce72e7e1cc04e3b03ceaeabe9329e6e9a3b95af44d032",
+  "original_user_pdf_sha256": "3901e680e07321dfc1ff6b0f5935d7d9142489fbd7ee5304e2b9bb3378da6e09",
+  "earlier_review_pdf_sha256": {
+    "bayesian": "355bc21e57a21e1dafaa9cea4bb1d114623be00b46f1627977c39ef11b5d4517",
+    "structural": "82e0f1b33d8c2a17fd393fc6753aafdd659071986bda6d47c8dd57d58bc48b21",
+    "prospective": "11cf8703ff2668fdc4e85ace40d5f89f4df115047b8d64f18a61e8074c351891"
+  },
+  "source_and_artifact_sha256": {
+    "AGENTS.md": "65dd8097945a23c717d70d64f81a14de53e87609d972be61ba12d3e631de28ae",
+    "src/kefir_models/tempered_noise.py": "65efc4f895ab65dd478fcf50070028e7b02575cd02d97a521d1d8ef4279aa188",
+    "tests/test_tempered_noise.py": "3f6a336fe95da18aa9a199637175030fe7609810fd95c0c3452c012db9e4830e",
+    "scripts/run_tempered_iteration.py": "e2b4dcbfe6a7e763f3457ba4ac92fe8b004a246c6828845d25b698f0a00ad879",
+    "scripts/build_tempered_tables.py": "0189694395b0d07c2028d54154ec4c1ab2b5383c2f244737c4c9666431c9e748",
+    "scripts/investigate_tempered_noise.py": "03ff3f325cd1824bc069644cbc2711716a177203862b44efac8c3a6b850c803d",
+    "scripts/summarize_tempered_noise.py": "8ae0b232033a1c2dd590f0eb83891c131a422020f1522f101a3b8b6bbe5ea688",
+    "docs/00_main.tex": "417f8a28017ad0dcda41c53fe6ef3af3fe926a69aa240b61bc0914dce214232c",
+    "docs/13_prospective_validation.tex": "0d9e3e7ff635376f39af90b5fc1f33e9d2e3508ff08d318e9aea731dfc5bf202",
+    "docs/14_tempered_noise.tex": "b366bc12bd79bf931fa57bc080a0160b05e688dd7aee3fa10e79a8513682697d",
+    "docs/tempered-noise.md": "5059c0b089bf6e9dd325efecc16926174bd2486aeb88eef24d15e0512c197a12",
+    "docs/code-review-issues.md": "0f49457c3e1b7273bf7e73d6a5292eb730cb6523a159a7266f30b34ae201b2ae",
+    "docs/generated/tempered_interpretation.tex": "b78f4dc1d61a23cbc72491adb9215e0a6d3186af69f014def6b188f5f2fe8405",
+    "docs/generated/tempered_tables.tex": "7c8936270fc95d3ff3f6cdb39d4d5bfa9bb571b801496c74c3cb3f1e8ef8a4a3",
+    "results/tempered/forecast_summary.csv": "25bd68b690dece661c85378afbf747903771f12bad7559e94f8760d144fcb6ef",
+    "results/tempered/all_metrics.csv": "9b047d3560c6b5e749756cec9ab40116ed7966659bb21f30f0df8c2a8f1f8280",
+    "results/tempered/prior_checks.csv": "73087ac9fbaad646bbc24a36225460b77f990a4a0fc8004ac3b11cf636cae063",
+    "results/tempered/historical_reference_scores.csv": "6838e91ca409e0091c6a0f77d8ac1912eab292651d02417b31a6bec314b522d9",
+    "results/tempered/predictive_integration_refinement.csv": "2afba7abb4b5a347d0501ce961eca665ac2cf91365fc13809ef255d6dae2769e",
+    "results/tempered/computation_checks.csv": "8cf6be74962b84bc28d0aad0ec49fff71c4daf9359cebae5f306e7c54ccc0d07",
+    "results/tempered/full_data_parameters.csv": "447c2dfa2106972cef42e6cd933e2a21f4d7f4efba437c63c5a1afeb501203c3",
+    "results/tempered/forecast_comparison.png": "ce0c54c16990fbbc8269a868a579787ec8acea0e7571fb50c8e7641f96c0a34c",
+    "results/tempered/noise_prior_comparison.png": "641a0cc2ed5bc9de9a9d68423473712f0e09a06adf5604dc42d8e2d373b4998e",
+    "results/tempered/summary_lineage.json": "3f12ad34fb821c4e6426e4e6fc896a4cb4bda4b424b67535c985d5fe39d4736a"
+  }
+}

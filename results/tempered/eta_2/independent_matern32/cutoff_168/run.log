@@ -1,0 +1,25 @@
+/home/saul/anaconda3/lib/python3.12/site-packages/scipy/optimize/_numdiff.py:590: RuntimeWarning: invalid value encountered in subtract
+  df = fun(x) - f0
+independent matern32 eta=2.0 cutoff=168.0 chain=1 acceptance=0.213
+independent matern32 eta=2.0 cutoff=168.0 chain=2 acceptance=0.232
+independent matern32 eta=2.0 cutoff=168.0 chain=3 acceptance=0.209
+independent matern32 eta=2.0 cutoff=168.0 chain=4 acceptance=0.213
+                      parameter  rank_split_rhat    bulk_ess    tail_ess
+                        initial         1.001914 3437.660129 5254.310933
+                       capacity         1.001018 3291.857487 4141.539494
+                  rate_original         1.000767 3184.189493 5178.573334
+                     process_sd         1.003362 1089.889366 1168.486759
+                 observation_sd         1.005728  970.438221  531.650490
+      correlation_time_original         1.002459 2970.001081 4742.881657
+                   coordinate_0         1.001914 3437.660129 5254.310933
+                   coordinate_1         1.002092 3434.567774 4753.972842
+                   coordinate_2         1.000767 3184.189493 5178.573334
+                   coordinate_3         1.002459 2970.001081 4742.881657
+                   coordinate_4         1.003362 1089.889366 1168.486759
+                   coordinate_5         1.005861  970.438221  531.650490
+predictive_mean_time_15_trial_1         1.000419 3049.154976 3744.921523
+predictive_mean_time_15_trial_2         1.000658 3065.242852 4342.061387
+predictive_mean_time_15_trial_3         1.000746 2798.205382 4931.530843
+Empty DataFrame
+Columns: []
+Index: []

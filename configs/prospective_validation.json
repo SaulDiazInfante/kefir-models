@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "draft_pending_metadata_and_new_units",
+  "reference_metadata": "data/metadata/reference.json",
+  "models": ["independent_ou", "shared_ou", "independent_matern32", "shared_matern32"],
+  "time_scale": 12.0,
+  "origins": [108.0, 120.0, 132.0, 144.0, 156.0],
+  "horizons": [12.0],
+  "interval_level": 0.9,
+  "primary_score": "interval_score",
+  "point_forecast": "posterior_predictive_median",
+  "diagnostics": ["rmse", "mean_bias", "coverage", "mean_width", "marginal_predictive_nll", "joint_predictive_nll_per_entry"],
+  "primary_noise_prior_multiplier": 1.0,
+  "sensitivity_noise_prior_multipliers": [0.5, 2.0],
+  "prior_coordinate_mean": [2.302585092994046, 1.0986122886681098, -0.6931471805599453, -0.6931471805599453, -3.506557897319982, -3.506557897319982],
+  "prior_coordinate_sd": [1.5, 1.0, 1.25, 1.25, 1.0, 1.0],
+  "sampler": {"seed": 101, "chains": 4, "warmup": 6000, "initial_draws_per_chain": 36000, "draw_extension_factor": 3, "maximum_attempts": 3, "max_rhat_exclusive": 1.01, "min_bulk_ess": 400, "min_tail_ess": 400},
+  "posterior_integration_draws": 12000,
+  "aggregation": "equal_weight_independent_units_within_horizon",
+  "refitting": "fit_each_new_unit_using_only_its_available_prefix_at_each_origin",
+  "independence_confirmed_by": null,
+  "validation_units": []
+}

@@ -34,8 +34,10 @@ predictive mean and central predictive intervals.
 ## Deterministic logistic PINN
 
 A physics-informed neural network whose trajectory network is constrained by the
-logistic ODE residual. It identifies the physical parameters (`eta`, `r`, `K`)
+logistic ODE residual. It identifies the physical parameters (`r`, `K`)
 while balancing data, initial-condition, and collocation (physics) losses.
+Its capacity bound matches the classical baseline, `K > max(y0) + 0.001`;
+later noisy observations do not determine the lower bound.
 
 ## Stochastic logistic PINN / SDE
 
@@ -48,3 +50,7 @@ predictive band in addition to the drift trajectory.
 Models are compared with RMSE, R², AIC, and BIC computed from observed residuals
 on the original scale. The stochastic models additionally report predictive
 interval coverage and mean interval width. See [Results](results.md).
+The AIC/BIC columns are Gaussian residual complexity scores for the fitted
+means; they are not a common maximized likelihood across these model families.
+Process-noise intervals hold fitted parameters fixed and are not Bayesian
+credible intervals. All reported metrics use the training observations.

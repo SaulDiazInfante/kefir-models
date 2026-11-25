@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "dataset_id": "water_kefir_development",
+  "path": "data/raw/waterKefirTrialsReferece.csv",
+  "sha256": "a9ca1a50f665305619db1a06be43a1dc31f16c0293499cdcc01eaf75f6261acd",
+  "role": "development_already_inspected",
+  "time_unit": null,
+  "response_name": null,
+  "response_unit": null,
+  "experimental_unit_definition": null,
+  "trial_to_experimental_unit": null,
+  "shared_conditions": null,
+  "confirmation_source": null,
+  "status": "awaiting_experimental_metadata",
+  "notes": "The CSV contains 15 times and three trial columns. Existing figure labels are not independent confirmation of units or experimental independence.",
+  "formatting_history": [
+    {
+      "date": "2026-11-25",
+      "change": "Upstream removed a trailing empty CSV field at time 120; parsed times and responses are identical.",
+      "previous_sha256": "230236e3be3eee57ca1821a65a3bb50cb09d28d097ce5aea9746cc901fc3a1b1",
+      "current_sha256": "a9ca1a50f665305619db1a06be43a1dc31f16c0293499cdcc01eaf75f6261acd",
+      "previous_git_revision": "ef1f80f",
+      "current_git_revision": "67b97bb",
+      "numeric_identity_method": "Column names and float.hex values in time-major order, compact JSON",
+      "numeric_identity_sha256": "3cc4fa32ff165d40b827a8978382380cfad6e8555647d24c63b7febc883d63ff"
+    }
+  ]
+}

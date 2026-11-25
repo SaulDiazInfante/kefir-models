@@ -1,0 +1,20 @@
+independent matern32 cutoff=108.0 chain=1 acceptance=0.211
+independent matern32 cutoff=108.0 chain=2 acceptance=0.201
+independent matern32 cutoff=108.0 chain=3 acceptance=0.202
+independent matern32 cutoff=108.0 chain=4 acceptance=0.210
+                parameter  rank_split_rhat     bulk_ess     tail_ess
+                  initial         1.000240 10107.666574 15076.834056
+                 capacity         1.000304 10546.562131 14628.330527
+            rate_original         1.000310 10464.892561 14436.108724
+               process_sd         1.004327  1809.566120  5166.056045
+           observation_sd         1.006556  1048.461940   803.273947
+correlation_time_original         1.002189  4526.488501 15863.128215
+             coordinate_0         1.000234 10107.666574 15076.834056
+             coordinate_1         1.000471 10237.986400 15708.951131
+             coordinate_2         1.000311 10464.892561 14436.108724
+             coordinate_3         1.002189  4526.488501 15863.128215
+             coordinate_4         1.004327  1809.566120  5166.056045
+             coordinate_5         1.006556  1048.461940   803.273947
+  kernel     sharing  cutoff  noise_multiplier  full_fit     task  computation_passed  evaluation_count     rmse  coverage  mean_width  marginal_predictive_nll  joint_predictive_nll_per_entry  parameter_log_variance  latent_log_variance  measurement_log_variance  posterior_prediction_draws  interval_score  mean_bias  above_upper  below_lower
+matern32 independent   108.0               0.5     False  rollout                True                15 2.160078  0.866667    5.960749                 2.200532                        2.070051                0.000177             0.000434                  0.000896                       12000        9.066125   1.277556            2            0
+matern32 independent   108.0               0.5     False one_step                True                 3 0.424275  1.000000    5.825482                 1.492879                        1.475488                0.000141             0.000415                  0.000896                       12000        5.825482  -0.134127            0            0

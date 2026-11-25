@@ -1,0 +1,28 @@
+/home/saul/anaconda3/lib/python3.12/site-packages/scipy/optimize/_numdiff.py:590: RuntimeWarning: invalid value encountered in subtract
+  df = fun(x) - f0
+independent matern32 eta=2.0 cutoff=144.0 chain=1 acceptance=0.214
+independent matern32 eta=2.0 cutoff=144.0 chain=2 acceptance=0.235
+independent matern32 eta=2.0 cutoff=144.0 chain=3 acceptance=0.233
+independent matern32 eta=2.0 cutoff=144.0 chain=4 acceptance=0.206
+                      parameter  rank_split_rhat    bulk_ess    tail_ess
+                        initial         1.001266 3297.491850 5180.861229
+                       capacity         1.001235 3118.279825 4660.004171
+                  rate_original         1.000505 3483.202576 5210.747392
+                     process_sd         1.004687 1359.512858 1912.654780
+                 observation_sd         1.002731 1987.318699 1181.448832
+      correlation_time_original         1.001945 2923.526518 3660.716537
+                   coordinate_0         1.001255 3297.491850 5180.861229
+                   coordinate_1         1.000857 3380.984574 5148.996292
+                   coordinate_2         1.000505 3483.202576 5210.747392
+                   coordinate_3         1.001945 2923.526518 3660.716537
+                   coordinate_4         1.004687 1359.512858 1912.654780
+                   coordinate_5         1.002731 1987.318699 1181.448832
+predictive_mean_time_13_trial_1         1.001014 3338.671930 4944.121202
+predictive_mean_time_13_trial_2         1.001156 3257.622259 4824.836069
+predictive_mean_time_13_trial_3         1.001306 3256.308882 6137.763178
+predictive_mean_time_14_trial_1         1.000988 3181.758185 4702.381289
+predictive_mean_time_14_trial_2         1.001108 3163.256082 4983.973952
+predictive_mean_time_14_trial_3         1.001159 3122.076919 5222.952058
+  kernel     sharing  eta  cutoff     task  computation_passed  coverage  mean_width  interval_score  marginal_predictive_nll  evaluation_count  rmse_mean  rmse_median  bias_mean  bias_median  joint_predictive_nll_per_entry  above_upper  below_lower
+matern32 independent  2.0   144.0  rollout                True  0.666667    5.517496       13.926423                 2.929489                 6   2.933197     2.960989   2.562228     2.595042                        2.589554            2            0
+matern32 independent  2.0   144.0 one_step                True  0.666667    5.492805        7.569966                 2.327662                 3   2.193768     2.219022   1.826256     1.858331                        2.289308            1            0

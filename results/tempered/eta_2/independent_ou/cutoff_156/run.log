@@ -1,0 +1,23 @@
+independent ou eta=2.0 cutoff=156.0 chain=1 acceptance=0.220
+independent ou eta=2.0 cutoff=156.0 chain=2 acceptance=0.211
+independent ou eta=2.0 cutoff=156.0 chain=3 acceptance=0.219
+independent ou eta=2.0 cutoff=156.0 chain=4 acceptance=0.220
+                      parameter  rank_split_rhat     bulk_ess     tail_ess
+                        initial         1.000305 11279.592347 17943.942999
+                       capacity         1.000335  9673.077986 10712.790140
+                  rate_original         1.000437  9609.726133 13502.260910
+                     process_sd         1.001498  4592.727199  7229.933502
+                 observation_sd         1.001742  3357.967769  1700.395023
+      correlation_time_original         1.000528  7595.799741 10937.903099
+                   coordinate_0         1.000305 11279.592347 17943.942999
+                   coordinate_1         1.000457 10638.824957 15052.587217
+                   coordinate_2         1.000437  9609.726133 13502.260910
+                   coordinate_3         1.000528  7595.799741 10937.903099
+                   coordinate_4         1.001498  4592.727199  7229.933502
+                   coordinate_5         1.001742  3357.967769  1700.395023
+predictive_mean_time_14_trial_1         1.000231 10580.848489 12471.158588
+predictive_mean_time_14_trial_2         1.000647  9551.652498 10170.245652
+predictive_mean_time_14_trial_3         1.000434  9657.873418  9674.179110
+kernel     sharing  eta  cutoff     task  computation_passed  coverage  mean_width  interval_score  marginal_predictive_nll  evaluation_count  rmse_mean  rmse_median  bias_mean  bias_median  joint_predictive_nll_per_entry  above_upper  below_lower
+    ou independent  2.0   156.0  rollout                True  0.666667    5.718746       16.483768                 3.014904                 3   3.079243     3.112546   2.837702     2.874031                        2.870483            1            0
+    ou independent  2.0   156.0 one_step                True  0.666667    5.718746       16.483768                 3.014904                 3   3.079243     3.112546   2.837702     2.874031                        2.870483            1            0

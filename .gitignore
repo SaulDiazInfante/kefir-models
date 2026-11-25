@@ -37,6 +37,9 @@ env/
 
 # Trained model checkpoints (regenerate with the CLIs)
 *.pt
+/results/bayesian/**/posterior_chains.npz
+/results/structural/**/posterior_chains.npz
+/results/tempered/**/posterior_chains.npz
 
 # CLI default output directories (curated figures are committed under results/)
 /neural_ode_outputs/

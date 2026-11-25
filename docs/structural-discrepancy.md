@@ -1,0 +1,148 @@
+# Structural discrepancy and late underprediction
+
+REV-09 follows the observation-model iteration. The aim is to distinguish
+common model departure from trial-specific deviations, and to check whether
+smoother discrepancy dynamics improve forecasts. This is an exploratory
+comparison following inspection of these same data. It cannot supply
+independent confirmation of a growth mechanism.
+
+## Fixed model comparison
+
+The logistic median, six transformed parameters, and their proper normal
+priors are unchanged from the [Bayesian observation model](bayesian-observation.md).
+Both discrepancy amplitude and measurement-error prior medians are multiplied
+by 0.5, 1, or 2 for sensitivity checks. No hyperparameter is selected by coverage.
+All calculations retain the original numerical units; physical units are
+unconfirmed.
+
+Four alternatives cross independent or shared Gaussian discrepancy with OU or
+Matérn-3/2 covariance. For temporal covariance A and three trials, the complete
+log-response covariance is:
+
+- Independent: `A ⊗ I_3 + b² I`.
+- Shared: `A ⊗ ones(3,3) + b² I`.
+
+The shared model replaces the independent discrepancy, rather than adding a
+second latent component. It has no trial random intercepts or trial-specific
+correlated process. Its remaining trial contrasts are independent measurement
+error. These are substantive assumptions about the experiment, not numerical
+corrections.
+
+OU correlation is `exp(-lambda*d)`; Matérn-3/2 correlation is
+`(1+kappa*d)*exp(-kappa*d)`, where `kappa = 2.1461932206*lambda`.
+The multiplier solves `(1+x)*exp(-x)=exp(-1)`. Both kernels therefore have
+variance `a²` and correlation `exp(-1)` at lag `1/lambda`. The prior on
+e-fold time `12/lambda` is matched across kernels. Matching the coefficient
+inside the two exponential factors instead would change that time scale.
+The Matérn model has a two-state linear SDE representation with a velocity
+state. Both kernels retain a stationary zero-mean discrepancy; neither
+guarantees correction of a persistent departure from the logistic asymptote.
+
+The exact Gaussian likelihood integrates the latent process. For the shared
+model an orthogonal trial decomposition gives `sqrt(3)*mean(residual)`
+covariance `3*A+b²*I`; the two contrasts each have covariance `b²*I`.
+Prediction conditions the common discrepancy on the residual mean with
+covariance `A+(b²/3)*I`. Joint predictive scores preserve dependence between
+trials and integrate over the joint parameter posterior. Response-scale
+density calculations include the log-transform Jacobian.
+
+## Experiments and scoring
+
+The 56 posterior cases comprise:
+
+- Four models, three noise-prior choices, cutoffs 108, 120, 132, and 168:
+  48 cases, including 12 frozen independent OU fits from the preceding iteration.
+- Four models at cutoffs 144 and 156 with the reference prior: eight additional
+  cases for late one-step forecasts.
+
+Four Metropolis chains per case adapt only during 6000 warmup iterations.
+The gates remain rank/folded split R-hat below 1.01 and bulk/tail ESS at least
+400 for transformed and reported physical parameters. Retained lengths extend
+when diagnostics fail; predictions do not determine chain length.
+See `results/structural/computation_checks.csv` for the complete check.
+
+Multi-time forecasts at origins 108, 120, and 132 retain 36 overlapping
+entries, reusing 15 distinct responses. The additional one-step comparison
+uses origins 108, 120, 132, 144, and 156 and scores targets 120 through 168
+exactly once each (15 scalar responses). Each fit uses only available past
+observations. This removes duplicate targets from that summary, but neither
+creates additional trajectories nor establishes independent-experiment
+calibration. Models and priors were chosen after prior exploratory analysis.
+
+All metrics are generated in `results/structural/forecast_summary.csv`:
+RMSE, signed bias (observed minus predictive mean), central 90% coverage,
+mean width, marginal and joint per-entry negative log predictive density,
+and central interval score. The interval score is width plus 20 times the
+distance outside either endpoint. Smaller density and interval scores are
+better; wider bands alone need not forecast better. The joint score retains
+dependence within each forecast block. Overlapping blocks remain descriptive.
+Full-data posterior replicate scores are stored separately and are not used
+as held-out validation.
+
+## Reproduction and provenance
+
+From the repository root with the Bayesian optional dependency installed:
+
+```sh
+python scripts/run_bayesian_iteration.py
+python scripts/run_structural_iteration.py
+```
+
+If the upstream Bayesian archives already exist, start with the second
+command. Use `--reuse-validated` to verify and rescore existing structural
+chains. The runner uses four concurrent fit processes, each restricted to
+one numerical thread; `--workers 1` makes execution sequential. These are
+experiment processes, not AI sub-agents. Chain archives are intentionally
+gitignored and regenerated by the runners. CSV summaries and provenance are
+retained.
+
+`scripts/summarize_structural_discrepancy.py` checks upstream data and
+inference-source hashes before reusing frozen OU samples. Its recomputed
+multi-time forecasts must match the preceding saved forecasts. New fits
+record input/source hashes, package versions, priors, seeds, acceptance
+rates, and settings. `predictive_integration_refinement.csv` checks 6000,
+12000, and 24000 posterior integration draws at cutoff 132. Model likelihoods
+are exact; posterior integration and finite-chain computation remain
+approximate. `scripts/build_structural_tables.py` generates the LaTeX
+tables and interpretation from those CSVs. The report includes the dedicated
+`docs/12_structural_discrepancy.tex` section.
+
+## Decision and next iteration
+
+REV-11 qualifies the mean-based numbers in this section: they use finite
+posterior-subset averages. The full response-scale predictive mean diverges
+under the unbounded noise-SD priors. The
+[moment audit](prospective-validation.md#predictive-moment-audit) establishes
+this analytically. Central predictive intervals and density scores remain
+well defined; the new prospective API uses predictive medians for point errors.
+
+Under reference priors, multi-time shared OU coverage is 35/36 (0.9722),
+versus 29/36 (0.8056) for independent OU. Mean width increases from 5.857 to
+9.138, while interval score improves from 10.164 to 9.371. Bias remains
+positive: 1.373 versus 1.648. For the 15 distinct one-step targets, coverage
+is 14/15 versus 13/15, with interval scores 7.489 versus 8.224.
+Marginal NLL improves under sharing, but joint per-entry NLL favors independent
+OU under both summaries (multi-time 2.196 versus 2.280; one-step 2.061 versus
+2.118). Better marginal forecasts therefore do not establish the stronger
+shared-dependence assumption. Independent Matérn and independent OU have
+very similar scores; the smoother kernel alone does not resolve the bias.
+
+No alternative is promoted to the mechanistic reference. Shared discrepancy
+changes dependence and broadens capacity uncertainty; smoother dynamics alone
+do not establish a resolution of the late departure. See the generated report
+tables for scores under all fixed choices. Computationally valid inference
+does not close REV-07's predictive-adequacy requirement.
+
+Before additional model selection, confirm the time/response units and whether
+the three trials share batches, instruments, or experimental disturbances.
+Retain a frozen comparison for independently collected trajectories, specifying
+the forecast origins, horizons, target responses, and scoring rules before
+inspecting outcomes. Analyze each new trajectory as a longitudinal unit;
+report performance by trajectory and horizon, and quantify uncertainty across
+independent experimental units when enough are available. Do not reuse these
+15 late responses as an untouched test set or infer universal 90% calibration
+from their coverage.
+
+The Matérn SDE representation follows [Särkkä and Solin, Example 12.7](https://users.aalto.fi/~ssarkka/pub/sde_book.pdf).
+The parameter/discrepancy identifiability limitation is discussed by
+[Brynjarsdóttir and O'Hagan](https://mail.tonyohagan.co.uk/academic/abs/simmach.html).

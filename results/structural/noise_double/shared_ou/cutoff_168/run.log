@@ -1,0 +1,19 @@
+shared ou cutoff=168.0 chain=1 acceptance=0.246
+shared ou cutoff=168.0 chain=2 acceptance=0.254
+shared ou cutoff=168.0 chain=3 acceptance=0.239
+shared ou cutoff=168.0 chain=4 acceptance=0.210
+                parameter  rank_split_rhat    bulk_ess    tail_ess
+                  initial         1.001805 3072.355669 2624.191689
+                 capacity         1.002754 2585.421299 2228.198898
+            rate_original         1.000648 4151.972321 5308.387489
+               process_sd         1.001762 2261.294011 3243.107923
+           observation_sd         1.000668 4988.699830 8348.012292
+correlation_time_original         1.001249 2567.748545 3358.398981
+             coordinate_0         1.001805 3072.355669 2624.191689
+             coordinate_1         1.001462 4190.610123 4674.983904
+             coordinate_2         1.000667 4151.972321 5308.387489
+             coordinate_3         1.001476 2567.748545 3358.398981
+             coordinate_4         1.001762 2261.294011 3243.107923
+             coordinate_5         1.000724 4988.699830 8348.012292
+kernel sharing  cutoff  noise_multiplier  full_fit    task  computation_passed  evaluation_count     rmse  coverage  mean_width  marginal_predictive_nll  joint_predictive_nll_per_entry  parameter_log_variance  latent_log_variance  measurement_log_variance  posterior_prediction_draws  interval_score  mean_bias  above_upper  below_lower
+    ou  shared   168.0               2.0      True rollout                True                42 0.712083   0.97619    3.183269                 1.062424                        1.056932                0.000006             0.000119                  0.000423                       12000        3.205591  -0.002284            0            1

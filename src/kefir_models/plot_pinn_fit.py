@@ -6,7 +6,7 @@ Produces two figures:
    - Observed trial data
    - Deterministic PINN fitted curve
    - Stochastic PINN drift curve
-   - Stochastic-PINN SDE mean + confidence band
+   - Stochastic-PINN SDE mean + predictive interval
 
 2. A side-by-side training-loss figure for the deterministic and
    stochastic PINN models.
@@ -191,7 +191,7 @@ def save_pinn_comparison_plot(
     _save_step(3, "sto_pinn_drift", "Water Kefir: Stochastic PINN Drift")
 
     # ------------------------------------------------------------------
-    # Step 4 – SDE mean + confidence band
+    # Step 4 – SDE mean + predictive interval
     # ------------------------------------------------------------------
     if sde_mean is not None:
         axis.plot(
@@ -207,7 +207,7 @@ def save_pinn_comparison_plot(
             sde_upper,
             color=MODEL_COLORS["logistic_pinn_sde_band"],
             alpha=0.14,
-            label=f"Logistic\nSDE PINN\n{interval_level:.0%} C.B.",
+            label=f"Logistic\nSDE PINN\n{interval_level:.0%} P.I.",
         )
         axis.plot(
             smooth_time,
@@ -344,7 +344,7 @@ def parse_args() -> argparse.Namespace:
         "--interval-level",
         type=float,
         default=0.90,
-        help="Confidence-band level shown in the legend label (default: 0.90).",
+        help="Predictive-interval level shown in the legend label (default: 0.90).",
     )
     return parser.parse_args()
 

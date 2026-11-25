@@ -1,0 +1,20 @@
+shared ou cutoff=120.0 chain=1 acceptance=0.202
+shared ou cutoff=120.0 chain=2 acceptance=0.254
+shared ou cutoff=120.0 chain=3 acceptance=0.245
+shared ou cutoff=120.0 chain=4 acceptance=0.224
+                parameter  rank_split_rhat    bulk_ess    tail_ess
+                  initial         1.001219 3435.424212 3124.168532
+                 capacity         1.001386 3233.089858 2943.737223
+            rate_original         1.000887 4445.196011 4435.492138
+               process_sd         1.002061 2476.913665 3349.130219
+           observation_sd         1.001100 5132.525577 7027.033662
+correlation_time_original         1.001481 3090.004282 4714.568486
+             coordinate_0         1.001252 3435.424212 3124.168532
+             coordinate_1         1.000992 3798.071684 3503.562208
+             coordinate_2         1.000887 4445.196011 4435.492138
+             coordinate_3         1.001016 3090.004282 4714.568486
+             coordinate_4         1.002061 2476.913665 3349.130219
+             coordinate_5         1.001100 5132.525577 7027.033662
+kernel sharing  cutoff  noise_multiplier  full_fit     task  computation_passed  evaluation_count     rmse  coverage  mean_width  marginal_predictive_nll  joint_predictive_nll_per_entry  parameter_log_variance  latent_log_variance  measurement_log_variance  posterior_prediction_draws  interval_score  mean_bias  above_upper  below_lower
+    ou  shared   120.0               0.5     False  rollout                True                12 2.253010  0.916667    8.098369                 2.248797                        2.352890                0.000681             0.001988                  0.000206                       12000        8.418936   1.458742            1            0
+    ou  shared   120.0               0.5     False one_step                True                 3 0.871593  1.000000    6.849051                 1.693718                        1.897009                0.000304             0.001525                  0.000206                       12000        6.849051  -0.152553            0            0

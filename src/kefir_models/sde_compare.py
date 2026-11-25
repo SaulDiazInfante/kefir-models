@@ -28,6 +28,7 @@ import torch
 from torch import Tensor, nn
 from torch.nn import functional as F
 
+from kefir_models.numerics import euler_maruyama
 from kefir_models.ode_fit import (
     DEFAULT_DATA_PATH,
     NeuralODEFunction,
@@ -55,6 +56,7 @@ from kefir_models.plot_style import (
     save_tight_png,
     trial_line_style,
 )
+from kefir_models.run_metadata import save_run_metadata
 
 
 @dataclass(frozen=True)
@@ -79,6 +81,7 @@ class SDEPrediction:
     population_mean: Tensor
     population_lower: Tensor
     population_upper: Tensor
+    integration_steps: int = 0
 
 
 @dataclass(frozen=True)
@@ -248,6 +251,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=1000,
         help="Monte Carlo paths used to summarize the trained Neural SDE.",
+    )
+    parser.add_argument(
+        "--sde-max-step",
+        type=float,
+        default=0.001,
+        help="Maximum Euler-Maruyama step on the normalized time scale.",
     )
     parser.add_argument(
         "--interval-level",
@@ -476,6 +485,7 @@ def simulate_sde_paths(
     interval_level: float,
     seed: int,
     device: torch.device,
+    max_step: float = 0.001,
 ) -> SDEPrediction:
     """Simulate Neural SDE paths and summarize predictive uncertainty."""
 
@@ -490,26 +500,16 @@ def simulate_sde_paths(
     time_points = data.time.to(device)
     initial_state = data.values[0].to(device)
     current = initial_state.unsqueeze(0).repeat(paths, 1, 1)
-    trajectories = [current]
-
     model.eval()
-    with torch.no_grad():
-        for index in range(len(time_points) - 1):
-            time = time_points[index]
-            delta_time = time_points[index + 1] - time
-            noise = torch.randn(
-                current.shape,
-                device=device,
-                generator=generator,
-            )
-            current = (
-                current
-                + model.drift(time, current) * delta_time
-                + model.diffusion(time, current) * torch.sqrt(delta_time.clamp_min(1e-8)) * noise
-            )
-            trajectories.append(current)
-
-    trajectory_tensor = torch.stack(trajectories).detach().cpu()
+    result = euler_maruyama(
+        time=time_points.cpu().numpy(),
+        initial=current,
+        drift=model.drift,
+        diffusion=model.diffusion,
+        max_step=max_step,
+        generator=generator,
+    )
+    trajectory_tensor = result.samples
     alpha = (1.0 - interval_level) / 2.0
     lower_quantile = alpha
     upper_quantile = 1.0 - alpha
@@ -533,6 +533,7 @@ def simulate_sde_paths(
         population_mean=population_mean,
         population_lower=population_lower,
         population_upper=population_upper,
+        integration_steps=result.steps,
     )
 
 
@@ -772,6 +773,7 @@ def build_metrics_frame(
                 "likelihood_parameter_count": int(spec["parameter_count"]) + 1,
                 "final_objective": spec["final_objective"],
                 "objective_type": spec["objective_type"],
+                "criterion_type": "gaussian_residual_score",
                 "interval_coverage": spec["interval_coverage"],
                 "mean_interval_width": spec["mean_interval_width"],
             },
@@ -859,7 +861,7 @@ def save_comparison_plot(
         comparison_frame["sde_upper"],
         color=MODEL_COLORS["neural_sde_band"],
         alpha=0.15,
-        label=f"NSDE\n{interval_level:.0%} C.B.",
+        label=f"NSDE\n{interval_level:.0%} P.I.",
     )
     axis.plot(
         time,
@@ -1189,6 +1191,7 @@ def main() -> None:
         interval_level=args.interval_level,
         seed=args.seed + 1,
         device=device,
+        max_step=args.sde_max_step,
     )
 
     comparison_frame = build_comparison_frame(
@@ -1205,6 +1208,15 @@ def main() -> None:
         sde_model=sde_model,
         sde_history=sde_history,
         classical_fit=classical_fit,
+    )
+    save_run_metadata(
+        args,
+        data_path,
+        device,
+        {
+            "integration_steps": sde_prediction.integration_steps,
+            "time_scale": data.scaling.time_scale,
+        },
     )
     save_outputs(
         output_dir=args.output_dir,

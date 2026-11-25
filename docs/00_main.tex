@@ -1,18 +1,21 @@
 \documentclass[11pt]{amsart}
 \input{setup}
+\input{generated/fit_values}
 
-\title[Water Kefir data Fitting Comparison]{
-    Water Kefir data Fitting Comparison:
-    Classic Logistic ODE, Neural ODE/SDE,
-    and Logistic det/sto PINN
+\title[Water Kefir Growth Models]{
+    Water Kefir Growth Models:
+    Dynamical Fits, Predictive Calibration,
+    and Bayesian Observation Models
 }
 \author{Saul Diaz-Infante Velasco}
 \date{\today}
 
 \begin{document}
-    \maketitle
     \input{abstract}
+    \maketitle
+    \clearpage
     \tableofcontents
+    \clearpage
     \section{Data and preprocessing}
         \input{01_data_and_preprocessing}
     \section{Models}
@@ -29,9 +32,27 @@
         \input{07_comparision_criteria}
     \section{Numerical results}
         \input{08_numerics}
+    \clearpage
+    \section{Transition accuracy and predictive calibration}
+        \input{10_calibration_investigation}
+    \clearpage
+    \section{Bayesian observation model and parameter uncertainty}
+        \input{11_bayesian_observation}
+    \clearpage
+    \section{Structural discrepancy and forecast underprediction}
+        \input{12_structural_discrepancy}
+    \clearpage
+    \section{Independent-trajectory validation protocol}
+        \input{13_prospective_validation}
+    \clearpage
+    \section{Noise priors with finite predictive moments}
+        \input{14_tempered_noise}
+    \clearpage
     \section{Reproducibility}
         \input{09_reproducibility}
 
 \bibliographystyle{plainnat}
+\begingroup\small\raggedright
 \bibliography{kefir_model_comparison_references}
+\endgroup
 \end{document}

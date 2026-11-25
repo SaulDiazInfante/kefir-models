@@ -10,6 +10,17 @@
     observations. The stochastic logistic PINN additionally identifies a
     multiplicative diffusion parameter and generates
     Monte Carlo predictive intervals. The reported residual criteria are
-    in-sample diagnostics; out-of-sample MSE should be computed with a
-    time-respecting train/test split.
+    in-sample diagnostics. Controlled transition-refinement experiments and
+    time-respecting forecast splits expose a difference between apparent
+    in-sample calibration and predictive performance. A subsequent Bayesian
+    comparison introduces explicit measurement error, a correlated latent
+    deviation, and posterior parameter uncertainty. These extensions are
+    evaluated separately from the five reference point-estimate fits. A
+    further matched comparison examines shared versus trial-specific
+    discrepancy and OU versus Mat\'ern temporal kernels, using both
+    overlapping multi-time holdouts and distinct one-step targets.
+    An independent-unit validation protocol is prepared; additional
+    trajectories and confirmed experimental metadata remain outstanding.
+    A separate tempered noise-prior comparison supplies finite predictive
+    moments, with an analytic integrability bound and controlled refits.
 \end{abstract}

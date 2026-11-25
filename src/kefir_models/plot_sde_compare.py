@@ -116,7 +116,7 @@ def save_comparison_plot(
     )
     save_step(5, "sde_mean")
 
-    # 6. Plot the confidence band
+    # 6. Plot the predictive interval
     if "sde_lower" in comparison_frame.columns and "sde_upper" in comparison_frame.columns:
         axis.fill_between(
             time,
@@ -124,7 +124,7 @@ def save_comparison_plot(
             comparison_frame["sde_upper"],
             color=MODEL_COLORS["neural_sde_band"],
             alpha=0.15,
-            label=f"NSDE\n{interval_level:.0%} C.B.",
+            label=f"NSDE\n{interval_level:.0%} P.I.",
         )
         axis.plot(
             time,

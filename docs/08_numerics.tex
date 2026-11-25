@@ -1,84 +1,38 @@
-\begin{table}[htbp]
-\centering
-\caption{Model comparison on the original response scale. Lower RMSE, AIC, and
-BIC are better; larger $R^2$ is better. The PINN AIC/BIC values use the same
-Gaussian residual criterion as the other fitted mean curves.}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lrrrrrr}
-\toprule
-Model & RMSE & $R^2$ & AIC & BIC & $p$ & $k$ \\
-\midrule
-Classical logistic ODE          & 1.4291 & 0.9826 & 165.84  & 171.26  & 2    &
-3    \\
-Neural ODE                      & 1.0281 & 0.9910 & 2502.20 & 4644.90 & 1185 &
-1186 \\
-Neural SDE                      & 2.0312 & 0.9649 & 4933.48 & 9217.08 & 2370 &
-2371 \\
-Deterministic logistic PINN     & 2.8167 & 0.9326 & 4644.90 & 8641.24 & 2211 &
-2212 \\
-Stochastic logistic PINN drift  & 2.8469 & 0.9311 & 4647.87 & 8646.01 & 2212 &
-2213 \\
-Stochastic logistic SDE mean    & 3.2324 & 0.9112 & 4659.30 & 8657.44 & 2212 &
-2213 \\
-\bottomrule
-\end{tabular}
-}
-\label{tab:metrics}
-\end{table}
+\input{generated/model_comparison_tables}
 
-\begin{table}[htbp]
-\centering
-\caption{Additional stochastic-model diagnostics.}
-\begin{tabular}{lrr}
-\toprule
-Model & 90 percent interval coverage & Mean interval width \\
-\midrule
-Neural SDE & 0.9333 & 7.3887 \\
-Stochastic logistic SDE & 0.8222 & 9.4517 \\
-\bottomrule
-\end{tabular}
-\label{tab:sde-intervals}
-\end{table}
+Among the reference fits, the Neural ODE has the smallest in-sample RMSE. The classical
+logistic baseline also fits well with only two physical parameters. Its
+Gaussian residual complexity scores are lower than those of the neural
+models under the particular parameter-count convention used here.
 
-\begin{table}[htbp]
-\centering
-\caption{Estimated logistic PINN inverse-problem parameters. The growth rate
-$r$ is on the original time scale.}
-\begin{tabular}{lrrr}
-\toprule
-Model & $r$ & $K$ & $\sigma$ \\
-\midrule
-Deterministic logistic PINN & 0.035062 & 52.3350 & -- \\
-Stochastic logistic PINN/SDE & 0.036806 & 52.2809 & 0.017245 \\
-\bottomrule
-\end{tabular}
-\label{tab:pinn-parameters}
-\end{table}
+The deterministic logistic PINN gives $r=\detR$ and $K=\detK$, while the
+stochastic fit gives $r=\stoR$, $K=\stoK$, and $\sigma=\stoSigma$.
+Both now use the same capacity lower bound as the classical baseline. The
+previous PINN constraint placed $K$ above every noisy observation and excluded
+the classical optimum; the earlier error gap therefore conflated constraint
+choice with loss formulation and optimization. Matching constraints improves
+the comparison, but does not establish that a fixed epoch budget reaches the
+optimum. Sensitivity checks and longer optimization are separate diagnostics.
 
-The Neural ODE has the best in-sample interpolation accuracy, with the smallest
-RMSE and largest $R^2$. The classical logistic ODE is less flexible, but it
-still explains approximately 98.3 percent of the observed variance. Because
-AIC and BIC penalize the number of fitted parameters, the two-parameter
-logistic model is strongly preferred by these information criteria.
+The AIC and BIC columns are Gaussian residual complexity scores. Neural SDE
+training uses a transition likelihood and PINN training uses a composite
+objective, so their fitted weights do not maximize this residual likelihood.
+All neural weights are counted, even though the number of weights greatly
+exceeds the number of scalar observations. These columns are descriptive
+penalties and do not establish a definitive likelihood-based or Bayesian
+ranking of the mechanisms.
 
-The deterministic logistic PINN and the stochastic logistic PINN drift recover
-similar logistic parameters, with $r\approx 0.035$--$0.037$ on the original time
-scale and $K\approx 52.3$. Their RMSE values are larger than those of the
-classical logistic ODE and the Neural ODE because the PINN objective balances
-data fit, initial-condition fit, and a collocation residual rather than
-minimizing only the closed-form logistic least-squares objective. The
-stochastic logistic SDE mean is less accurate as a fitted mean curve than the
-deterministic PINN trajectory, but it provides a process-noise estimate and a
-central 90 percent predictive band.
-
-The AIC and BIC values for the neural models should be interpreted as
-parameter-penalized residual criteria for the fitted mean curves. They are not
-the same as comparing the SDE transition likelihood directly to an exact ODE
-likelihood. For the PINNs, these criteria also penalize every neural-network
-weight even though the scientific inverse problem has only two or three
-physical parameters. Their practical role here is to quantify the tradeoff
-between in-sample residual accuracy and model complexity, not to declare a
-definitive mechanistic winner.
+The Neural SDE simulation uses a maximum normalized-time step of 0.001.
+The logistic simulation uses a maximum original-time step of 0.05. These
+integration settings are independent of plotting resolution. Refining the
+forward solver does not refine the Euler transition approximation used during
+training. In particular, the Neural SDE has substantially lower empirical
+coverage after integration refinement than in the earlier one-step rollout.
+A high coverage value from the coarse rollout did not establish calibration
+of its continuous-time interpretation. Both coverage statistics use the
+training observations, including fixed initial values, and are conditional on
+point estimates. The following sections report the executed forecasting
+investigation and the subsequent Bayesian uncertainty extension separately.
 
 All comparison figures below were regenerated with the shared plotting style in
 \path{src/kefir_models/plot_style.py}. Observed trial markers, fitted mean

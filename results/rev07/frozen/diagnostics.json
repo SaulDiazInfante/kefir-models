@@ -1,0 +1,15 @@
+{
+  "checkpoint": "results/neural_sde_comparison_outputs/water_kefir_neural_sde_model.pt",
+  "drift_derivative_times_gap_quantiles": [
+    -3.655735492706299,
+    -1.3766147792339325,
+    -0.31577058136463165,
+    -0.01588635565713048,
+    0.03685916215181351
+  ],
+  "negative_drift_euler_unstable_count": 6,
+  "transition_count": 42,
+  "checkpoint_sha256": "cd3344f657f03628a7febfb351afbf75d71f742a83a882fc477f5e4ddee13ddb",
+  "torch_version": "2.7.1+cu126",
+  "note": "Local frozen linearization, not a global nonlinear stability theorem; MC NLL is a Gaussian moment proxy."
+}

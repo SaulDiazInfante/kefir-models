@@ -1,0 +1,60 @@
+{
+  "arguments": {
+    "kind": "ou",
+    "cutoff": 108.0,
+    "noise_multiplier": 1.0,
+    "warmup": 6000,
+    "draws": 36000,
+    "chains": 4,
+    "seed": 101,
+    "prediction_draws": 12000,
+    "output_dir": "/home/saul/projects/kefir-models/results/bayesian/reference/ou/cutoff_108",
+    "reuse_chains": true
+  },
+  "prior_coordinate_mean": [
+    2.3025850929940455,
+    1.0986122886681096,
+    -0.6931471805599453,
+    -0.6931471805599453,
+    -3.506557897319982,
+    -3.506557897319982
+  ],
+  "prior_coordinate_sd": [
+    1.5,
+    1.0,
+    1.25,
+    1.25,
+    1.0,
+    1.0
+  ],
+  "acceptance_by_chain": [
+    0.2286111111111111,
+    0.2323888888888889,
+    0.23483333333333334,
+    0.21516666666666667
+  ],
+  "map_objectives": [
+    52.38306009733912,
+    52.383060097337946
+  ],
+  "prediction_method": "Rao-Blackwellized Gaussian-mixture CDF and log densities",
+  "sampling_source_sha256": {
+    "/home/saul/projects/kefir-models/scripts/investigate_bayesian_observation.py": "48e27f5b3819665a114d0b5520b4015eea5967af6f170bea67a9c54ef85ed59c",
+    "src/kefir_models/bayesian_observation.py": "f2ec6fbe04782ed84184b11e0842dfe7eb49c92054a31389ea5619c5c58b5490",
+    "src/kefir_models/mcmc.py": "52ba5e7535265ce9612eec83bd7e044a5bf1f1ecae7e556970be5ade363cf27b",
+    "src/kefir_models/posterior_prediction.py": "20c5af70cdf2166c69701234442f15ec627fe4761a8612a89740d78ef8f20bf2"
+  },
+  "computation_passed": true,
+  "time_unit_original": 12.0,
+  "units": "Original numerical units; physical units unconfirmed.",
+  "elapsed_seconds": 2.7468994709997787,
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "data_sha256": "230236e3be3eee57ca1821a65a3bb50cb09d28d097ce5aea9746cc901fc3a1b1",
+  "source_sha256": {
+    "/home/saul/projects/kefir-models/scripts/investigate_bayesian_observation.py": "4054c48283ae805d9d0328bb85c6c292ea1bf84fe55667dee6b1b8ae719a37e5",
+    "src/kefir_models/bayesian_observation.py": "f2ec6fbe04782ed84184b11e0842dfe7eb49c92054a31389ea5619c5c58b5490",
+    "src/kefir_models/mcmc.py": "52ba5e7535265ce9612eec83bd7e044a5bf1f1ecae7e556970be5ade363cf27b",
+    "src/kefir_models/posterior_prediction.py": "20c5af70cdf2166c69701234442f15ec627fe4761a8612a89740d78ef8f20bf2"
+  }
+}

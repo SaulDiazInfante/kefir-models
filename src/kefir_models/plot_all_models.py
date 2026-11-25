@@ -282,7 +282,7 @@ def save_all_model_comparison_sequence(
         neural_frame["sde_upper"],
         color=MODEL_COLORS["neural_sde_band"],
         alpha=0.15,
-        label=f"NSDE\n{interval_level:.0%} C.B.",
+        label=f"NSDE\n{interval_level:.0%} P.I.",
     )
     axis.plot(
         neural_time,
@@ -330,7 +330,7 @@ def save_all_model_comparison_sequence(
         pinn_curve_frame["sde_upper"],
         color=MODEL_COLORS["logistic_pinn_sde_band"],
         alpha=0.14,
-        label=f"Logistic\nSDE PINN\n{interval_level:.0%} C.B.",
+        label=f"Logistic\nSDE PINN\n{interval_level:.0%} P.I.",
     )
     axis.plot(
         pinn_time,

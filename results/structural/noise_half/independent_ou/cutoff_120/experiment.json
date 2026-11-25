@@ -1,0 +1,26 @@
+{
+  "upstream": "results/bayesian/noise_half/ou/cutoff_120",
+  "upstream_manifest_sha256": "a8f612b9094e163c10ff239b7186338f1d9d16059ed32fc1831f0f813927932e",
+  "upstream_chains_sha256": "abde4c0f5c0f7bb943a2b325581d39176ca18716c2fb1d86e00363306671f7c5",
+  "prediction_source_sha256": {
+    "/home/saul/projects/kefir-models/scripts/summarize_structural_discrepancy.py": "8d1d0312f51e7780efde1e5833f79f31c77dfa99a283028872babc9be6adc202",
+    "scripts/investigate_bayesian_observation.py": "c3326bb9ba043753f55d7123be58b5df926fdd48bf1b15138cec6135e4d20714",
+    "src/kefir_models/structural_discrepancy.py": "11ff481a782d214d4177a36a4c61eba5ff1cdf3e388378f60213a5bb740ac236",
+    "src/kefir_models/posterior_prediction.py": "20c5af70cdf2166c69701234442f15ec627fe4761a8612a89740d78ef8f20bf2"
+  },
+  "computation_passed": true,
+  "arguments": {
+    "kernel": "ou",
+    "sharing": "independent",
+    "cutoff": 120,
+    "noise_multiplier": 0.5,
+    "draws": 108000,
+    "warmup": 6000
+  },
+  "acceptance_by_chain": [
+    0.2056851851851852,
+    0.21287037037037038,
+    0.23616666666666666,
+    0.20377777777777778
+  ]
+}

@@ -1,0 +1,8 @@
+item,value
+Candidate models,4
+Forecast origins,"108, 120, 132, 144, 156"
+Forecast horizon,12
+Observation interval level,0.90
+Primary score,Central interval score
+Point forecast,Posterior predictive median
+Aggregation,Equal weights for independent units

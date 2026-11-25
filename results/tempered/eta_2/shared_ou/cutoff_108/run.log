@@ -1,0 +1,26 @@
+shared ou eta=2.0 cutoff=108.0 chain=1 acceptance=0.202
+shared ou eta=2.0 cutoff=108.0 chain=2 acceptance=0.234
+shared ou eta=2.0 cutoff=108.0 chain=3 acceptance=0.237
+shared ou eta=2.0 cutoff=108.0 chain=4 acceptance=0.211
+                      parameter  rank_split_rhat    bulk_ess    tail_ess
+                        initial         1.001939 3106.836339 3157.030010
+                       capacity         1.001690 3044.086918 2902.677603
+                  rate_original         1.000665 3856.835140 3982.566926
+                     process_sd         1.001252 2158.049724 3129.503555
+                 observation_sd         1.000624 4710.234474 6713.458726
+      correlation_time_original         1.000948 2670.455605 3690.911177
+                   coordinate_0         1.001939 3106.836339 3157.030010
+                   coordinate_1         1.001417 3973.175458 4169.651875
+                   coordinate_2         1.000665 3856.835140 3982.566926
+                   coordinate_3         1.000948 2670.455605 3690.911177
+                   coordinate_4         1.001150 2158.049724 3129.503555
+                   coordinate_5         1.000724 4710.234474 6713.458726
+predictive_mean_time_10_trial_1         1.000979 4488.286837 5997.604589
+predictive_mean_time_10_trial_2         1.000979 4488.286837 5997.604589
+predictive_mean_time_10_trial_3         1.000979 4488.286837 5997.604589
+predictive_mean_time_14_trial_1         1.001251 3556.438243 3989.432562
+predictive_mean_time_14_trial_2         1.001251 3556.438243 3989.432562
+predictive_mean_time_14_trial_3         1.001251 3556.438243 3989.432562
+kernel sharing  eta  cutoff     task  computation_passed  coverage  mean_width  interval_score  marginal_predictive_nll  evaluation_count  rmse_mean  rmse_median  bias_mean  bias_median  joint_predictive_nll_per_entry  above_upper  below_lower
+    ou  shared  2.0   108.0  rollout                True       1.0   10.250645       10.250645                 2.201711                15   1.897357     2.016572   0.937007     1.103061                         2.11195            0            0
+    ou  shared  2.0   108.0 one_step                True       1.0    7.969478        7.969478                 1.735012                 3   0.456373     0.415809  -0.257645    -0.176075                         1.25732            0            0

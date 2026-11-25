@@ -1,0 +1,56 @@
+{
+  "arguments": {
+    "config": "configs/sde_compare_config_reference.json",
+    "data_path": "data/raw/waterKefirTrialsReferece.csv",
+    "output_dir": "results/neural_sde_comparison_outputs",
+    "ode_epochs": 1000,
+    "sde_epochs": 1000,
+    "classical_epochs": 3000,
+    "ode_learning_rate": 0.01,
+    "sde_learning_rate": 0.005,
+    "classical_learning_rate": 0.05,
+    "hidden_units": 32,
+    "hidden_layers": 2,
+    "weight_decay": 0.0001,
+    "min_diffusion": 0.001,
+    "ode_method": "rk4",
+    "sde_paths": 1000,
+    "sde_max_step": 0.001,
+    "interval_level": 0.9,
+    "seed": 7,
+    "device": "cpu",
+    "plot": true
+  },
+  "device": "cpu",
+  "stochastic_interpretation": "Ito",
+  "transition_likelihood": "one_observation_step_Euler_Maruyama_Gaussian",
+  "simulation": "fixed_grid_Euler_Maruyama_with_linear_output_interpolation",
+  "data_sha256": "230236e3be3eee57ca1821a65a3bb50cb09d28d097ce5aea9746cc901fc3a1b1",
+  "source_sha256": {
+    "__init__.py": "73f22da2bb5029d1d73f6b28b2e6795308d5804cddfb0884a636dcd832cb69b2",
+    "logistic_pinn_compare.py": "70539a825d57b3d4f7e2b363b5ff24b17af0588c42bc99ccd0e45296aab5452f",
+    "numerics.py": "b483ffd10df5d11e4ae320e331caaf9c769861a0c0cd318bc0f7c030ff27b6f4",
+    "ode_fit.py": "ca096dd109c9d1b43f999b2485b708436799bb76e1a26b9a59431feeeeec92a6",
+    "plot_all_models.py": "6750132eca835116d97b67b20130251149b80d73bdc03307c8f61177553fbf12",
+    "plot_ode_fit.py": "e774da766d666df919e7208159f91dba28487e6dec0104a504c5d69672a4382f",
+    "plot_pinn_fit.py": "914936a6b948e6966e3816e68d29b9057751b946898005d318c88619fb7d037b",
+    "plot_sde_compare.py": "f338b40e01bf611b53d60a83d7a967c9dc4c127742956824239432c794543f49",
+    "plot_style.py": "a68bb27f257b05e454846c78a2fea3e84d3344d08a7326d8459478b8ba3e8ac6",
+    "report_tables.py": "70195643fec7ea21ff4c330a49d4f1b614f0ce361bf726efc8528688e0cc99ba",
+    "run_metadata.py": "d7b6c81dc0c8acb9d9c6b67d65100301080a89e0530aa2787d32248b887f39fb",
+    "sde_compare.py": "8dc12a0cd8e309523224c2e9ef81cd732e389f42db20c98a1ef78bd3dabfbacc"
+  },
+  "git_revision": "ef1f80fd00e31957b2d35ca5716f5805be68cd00",
+  "versions": {
+    "python": "3.12.2",
+    "numpy": "1.26.4",
+    "pandas": "2.3.1",
+    "torch": "2.7.1+cu126",
+    "torchdiffeq": "0.2.5"
+  },
+  "torch_threads": 1,
+  "diagnostics": {
+    "integration_steps": 1000,
+    "time_scale": 168.0
+  }
+}

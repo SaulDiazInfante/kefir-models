@@ -1,0 +1,23 @@
+independent ou eta=2.0 cutoff=168.0 chain=1 acceptance=0.221
+independent ou eta=2.0 cutoff=168.0 chain=2 acceptance=0.234
+independent ou eta=2.0 cutoff=168.0 chain=3 acceptance=0.225
+independent ou eta=2.0 cutoff=168.0 chain=4 acceptance=0.216
+                      parameter  rank_split_rhat    bulk_ess    tail_ess
+                        initial         1.000622 3327.044825 5289.324899
+                       capacity         1.001275 2614.757533 3093.155034
+                  rate_original         1.000807 3207.021119 4113.803040
+                     process_sd         1.002518 1543.396996 1265.231457
+                 observation_sd         1.002322 1399.431653 1075.258607
+      correlation_time_original         1.001219 2574.255596 2799.797928
+                   coordinate_0         1.000622 3327.044825 5289.324899
+                   coordinate_1         1.001133 3032.887917 4766.190633
+                   coordinate_2         1.000807 3207.021119 4113.803040
+                   coordinate_3         1.001411 2574.255596 2799.797928
+                   coordinate_4         1.002518 1543.396996 1265.231457
+                   coordinate_5         1.002322 1399.431653 1075.258607
+predictive_mean_time_15_trial_1         1.000955 2686.331699 3199.867859
+predictive_mean_time_15_trial_2         1.001061 2675.935548 3343.329970
+predictive_mean_time_15_trial_3         1.001248 2423.598059 3587.841752
+Empty DataFrame
+Columns: []
+Index: []

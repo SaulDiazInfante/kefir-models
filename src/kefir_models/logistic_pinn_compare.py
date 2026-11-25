@@ -32,6 +32,7 @@ import torch
 from torch import Tensor, nn
 from torch.nn import functional as F
 
+from kefir_models.numerics import euler_maruyama
 from kefir_models.ode_fit import (
     DEFAULT_DATA_PATH,
     read_trial_csv,
@@ -54,6 +55,8 @@ from kefir_models.plot_style import (
     save_tight_png,
     trial_line_style,
 )
+from kefir_models.run_metadata import save_run_metadata
+from kefir_models.sde_compare import gaussian_information_criteria
 
 
 @dataclass(frozen=True)
@@ -105,6 +108,8 @@ class SDESummary:
     population_mean: np.ndarray
     population_lower: np.ndarray
     population_upper: np.ndarray
+    integration_steps: int = 0
+    clipped_values: int = 0
 
 
 class LogisticTrajectoryPINN(nn.Module):
@@ -327,6 +332,12 @@ def parse_args(args: list[str] | None = None) -> argparse.Namespace:
         help="Monte Carlo paths used for stochastic predictive intervals.",
     )
     parser.add_argument(
+        "--sde-max-step",
+        type=float,
+        default=0.05,
+        help="Maximum Euler-Maruyama integration step in original time units.",
+    )
+    parser.add_argument(
         "--interval-level",
         type=float,
         default=0.90,
@@ -389,9 +400,8 @@ def build_logistic_data(
     if value_scale <= 0.0:
         value_scale = 1.0
 
-    maximum_observed = float(np.nanmax(observed_with_nan))
-    minimum_capacity = maximum_observed + 1e-3
     initial_values = observed_with_nan[0].astype(np.float32)
+    minimum_capacity = float(np.max(initial_values)) + 1e-3
     initial_level = float(np.nanmean(initial_values))
 
     normalized_time = ((time_values - time_min) / time_scale).reshape(-1, 1)
@@ -423,7 +433,10 @@ def estimate_initial_growth_rate(data: LogisticPINNData) -> float:
     observed_mean = data.raw_frame[data.trial_columns].mean(axis=1).to_numpy(float)
     initial_value = float(observed_mean[0])
     final_value = float(observed_mean[-1])
-    initial_capacity = data.minimum_capacity * 1.08
+    initial_capacity = max(
+        float(np.nanmax(data.raw_frame[data.trial_columns].to_numpy())) * 1.05,
+        data.minimum_capacity + 1.0,
+    )
     elapsed_time = max(float(data.time_hours[-1].detach().cpu()) - data.time_min, 1.0)
 
     if not (0.0 < initial_value < final_value < initial_capacity):
@@ -447,7 +460,10 @@ def make_model_and_parameters(
 ) -> tuple[LogisticTrajectoryPINN, LogisticParameterization]:
     """Initialize a trajectory PINN and positive logistic parameters."""
 
-    initial_capacity = max(data.minimum_capacity * 1.08, data.initial_level + 1.0)
+    initial_capacity = max(
+        float(np.nanmax(data.raw_frame[data.trial_columns].to_numpy())) * 1.05,
+        data.minimum_capacity + 1.0,
+    )
     initial_growth_rate = estimate_initial_growth_rate(data)
     diffusion_start = initial_diffusion if stochastic else None
 
@@ -685,6 +701,7 @@ def simulate_logistic_sde(
     interval_level: float,
     seed: int,
     device: torch.device,
+    max_step: float = 0.05,
 ) -> SDESummary:
     """Simulate stochastic logistic SDE paths and summarize intervals."""
 
@@ -693,10 +710,10 @@ def simulate_logistic_sde(
     if not 0.0 < interval_level < 1.0:
         raise ValueError("interval_level must be between 0 and 1.")
 
-    time_tensor = torch.tensor(time_hours, dtype=torch.float32, device=device)
     initial_tensor = torch.tensor(initial_values, dtype=torch.float32, device=device)
-    current = initial_tensor.unsqueeze(0).repeat(paths, 1).clamp_min(1e-6)
-    trajectories = [current]
+    if not bool(torch.isfinite(initial_tensor).all()) or bool((initial_tensor <= 0).any()):
+        raise ValueError("Initial values must be finite and positive.")
+    current = initial_tensor.unsqueeze(0).repeat(paths, 1)
 
     generator = torch.Generator(device=device)
     generator.manual_seed(seed)
@@ -704,17 +721,16 @@ def simulate_logistic_sde(
     capacity = torch.tensor(carrying_capacity, dtype=torch.float32, device=device)
     sigma = torch.tensor(diffusion, dtype=torch.float32, device=device)
 
-    for index in range(len(time_tensor) - 1):
-        delta_time = (time_tensor[index + 1] - time_tensor[index]).clamp_min(1e-8)
-        noise = torch.randn(current.shape, generator=generator, device=device)
-        drift = growth * current * (1.0 - current / capacity)
-        diffusion_term = sigma * current
-        current = (
-            current + drift * delta_time + diffusion_term * torch.sqrt(delta_time) * noise
-        ).clamp_min(1e-6)
-        trajectories.append(current)
-
-    trajectory_tensor = torch.stack(trajectories).detach().cpu()
+    result = euler_maruyama(
+        time=time_hours,
+        initial=current,
+        drift=lambda t, x: growth * x * (1.0 - x / capacity),
+        diffusion=lambda t, x: sigma * x,
+        max_step=max_step,
+        generator=generator,
+        minimum_state=1e-6,
+    )
+    trajectory_tensor = result.samples
     alpha = (1.0 - interval_level) / 2.0
     mean_by_trial = trajectory_tensor.mean(dim=1).numpy()
     lower_by_trial = torch.quantile(trajectory_tensor, alpha, dim=1).numpy()
@@ -731,6 +747,8 @@ def simulate_logistic_sde(
         population_mean=flattened.mean(dim=1).numpy(),
         population_lower=torch.quantile(flattened, alpha, dim=1).numpy(),
         population_upper=torch.quantile(flattened, 1.0 - alpha, dim=1).numpy(),
+        integration_steps=result.steps,
+        clipped_values=result.clipped_values,
     )
 
 
@@ -936,12 +954,20 @@ def build_metrics_frame(
     metric_rows = []
     for row in rows:
         fitted = row.pop("fitted")
+        residual_sigma, aic, bic, count = gaussian_information_criteria(
+            observed, fitted, row["parameter_count"]
+        )
         metric_rows.append(
             {
                 **row,
                 "rmse": compute_rmse(observed, fitted),
                 "r_squared": compute_r_squared(observed, fitted),
-                "observation_count": int(np.sum(~np.isnan(observed))),
+                "observation_count": count,
+                "aic": aic,
+                "bic": bic,
+                "residual_sigma": residual_sigma,
+                "likelihood_parameter_count": row["parameter_count"] + 1,
+                "criterion_type": "gaussian_residual_score",
             },
         )
     return pd.DataFrame(metric_rows)
@@ -1066,7 +1092,7 @@ def save_comparison_plot(
         dense_frame["sde_upper"],
         color=MODEL_COLORS["logistic_pinn_sde_band"],
         alpha=0.14,
-        label=f"Logistic\nSDE PINN\n{interval_level:.0%} C.B.",
+        label=f"Logistic\nSDE PINN\n{interval_level:.0%} P.I.",
     )
     axis.plot(
         dense_frame["time"],
@@ -1312,6 +1338,7 @@ def main() -> None:
         interval_level=args.interval_level,
         seed=args.seed + 1,
         device=device,
+        max_step=args.sde_max_step,
     )
     dense_sde = simulate_logistic_sde(
         time_hours=dense_time,
@@ -1321,8 +1348,9 @@ def main() -> None:
         diffusion=stochastic_diffusion,
         paths=args.sde_paths,
         interval_level=args.interval_level,
-        seed=args.seed + 2,
+        seed=args.seed + 1,
         device=device,
+        max_step=args.sde_max_step,
     )
     comparison_frame, dense_frame = build_comparison_frames(
         data=data,
@@ -1342,6 +1370,16 @@ def main() -> None:
     parameter_frame = build_parameter_frame(
         deterministic_fit=deterministic_fit,
         stochastic_fit=stochastic_fit,
+    )
+    save_run_metadata(
+        args,
+        data_path,
+        device,
+        {
+            "integration_steps": observed_sde.integration_steps,
+            "clipped_values": observed_sde.clipped_values,
+            "capacity_lower_bound": data.minimum_capacity,
+        },
     )
 
     save_outputs(
